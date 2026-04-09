@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      # Mount content so you can update posts without rebuilding the image
+      - ./content:/app/content
+    restart: unless-stopped
