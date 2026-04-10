@@ -3,7 +3,8 @@ import { Geist, IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Dither from "@/components/other/Dither";
+import dynamic from "next/dynamic";
+const Dither = dynamic(() => import("@/components/other/Dither"), { ssr: false });
 import { useEffect, useRef, useState } from "react";
 import "./globals.css";
 
