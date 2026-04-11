@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-const themes = ["system", "light", "dark"] as const;
+const themes = ["light", "system", "dark"] as const;
 type Theme = (typeof themes)[number];
 
 // fixed-size buttons — pill translates by exactly (n)px * index, no calc hacks
@@ -82,7 +82,13 @@ export default function ThemeToggle() {
       {themes.map((t) => (
         <button
           key={t}
-          onClick={() => setTheme(t)}
+          onClick={() => {
+            if (!document.startViewTransition) {
+              setTheme(t);
+              return;
+            }
+            document.startViewTransition(() => setTheme(t));
+          }}
           aria-label={t}
           style={{ width: BTN, height: BTN }}
           className={`relative z-10 flex items-center justify-center transition-colors duration-200 ${

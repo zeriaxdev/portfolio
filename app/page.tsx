@@ -43,7 +43,7 @@ const setup = [
 ];
 
 export default function Home() {
-  const [greeting, setGreeting] = useState("hi");
+  const [greeting, setGreeting] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
   useEffect(() => {
@@ -52,8 +52,11 @@ export default function Home() {
 
   return (
     <section>
-      <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
-        {greeting}, i&apos;m zeriax!
+      <h1
+        className="mb-8 text-2xl font-semibold tracking-tighter transition-opacity"
+        style={{ opacity: greeting !== null ? 1 : 0 }}
+      >
+        {greeting ?? "hi"}, i&apos;m zeriax!
       </h1>
 
       <article>

@@ -7,6 +7,26 @@
   --font-mono: var(--font-ibm-plex-mono);
 }
 
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+@layer utilities {
+  .animate-page-enter {
+    /* expo-out: fast start, sharp deceleration at end = satisfying snap */
+    animation: page-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
 @layer components {
   .nav-link {
     @apply tracking-tight transition-colors text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100;

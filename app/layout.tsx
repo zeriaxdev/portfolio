@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import dynamic from "next/dynamic";
 const Dither = dynamic(() => import("@/components/other/Dither"), { ssr: false });
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -112,8 +113,7 @@ function BackgroundDither() {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const style = "font-size: 3em;";
-  console.info("%cWhat are you looking for here?", style);
+  const pathname = usePathname();
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -124,7 +124,7 @@ export default function RootLayout({
         <ThemeProvider>
           <div className="mx-auto flex min-h-screen max-w-2xl flex-col justify-between px-6 py-12 sm:py-24">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main key={pathname} className="flex-1 animate-page-enter">{children}</main>
             <Footer />
           </div>
         </ThemeProvider>
