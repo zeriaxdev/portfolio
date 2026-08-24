@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getBlogPosts } from "@/lib/blog";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description: "Posts by zeriax.",
+};
 
 export default function BlogPage() {
   const posts = getBlogPosts();

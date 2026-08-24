@@ -40,7 +40,7 @@ export function Pre({ children, ...props }: any) {
       <button
         onClick={onCopy}
         aria-label={copied ? "Copied" : "Copy code"}
-        className="absolute top-2.5 right-2.5 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+        className="absolute top-2.5 right-2.5 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200"
       >
         {copied ? <CheckIcon /> : <CopyIcon />}
       </button>

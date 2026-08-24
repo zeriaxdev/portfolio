@@ -4,42 +4,34 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 
 const greetings = ["hi", "hello", "hey", "moi", "morjens", "moro", "terve"];
 
+const experience = [
+  {
+    company: "DollarDeploy",
+    role: "Junior Product Designer, Customer Solutions Intern",
+    meta: "Part-time · Hybrid",
+    dates: "Mar 2025 – Present",
+    description:
+      "Implemented templates for running AI and open-source apps. Continuous UI/UX testing and code review.",
+  },
+];
+
 const skills = [
   {
     category: "Languages",
     items: ["TypeScript", "JavaScript", "HTML/CSS", "Python", "Go", "Rust"],
   },
   {
-    category: "Libraries",
-    items: ["Next.js", "React", "Discord.js", "Astro"],
+    category: "Frameworks",
+    items: ["Next.js", "React", "Astro", "Discord.js"],
+  },
+  {
+    category: "Infra & Cloud",
+    items: ["Docker", "GitHub Actions", "Hetzner", "Verda", "Netlify", "DollarDeploy"],
   },
   {
     category: "Databases",
     items: ["PostgreSQL", "MongoDB"],
   },
-  {
-    category: "OS",
-    items: ["Arch Linux", "Ubuntu"],
-  },
-  {
-    category: "Sysadmin",
-    items: ["Docker", "Bash", "DNS", "GitHub Actions"],
-  },
-  {
-    category: "Cloud",
-    items: ["Hetzner", "Verda", "Netlify", "DollarDeploy"],
-  },
-  {
-    category: "Other",
-    items: ["Git", "GitHub"],
-  },
-];
-
-const setup = [
-  { label: "Machine", value: " MacBook Pro M5 · 24 GB · 1 TB" },
-  { label: "OS", value: "macOS Tahoe 26.4" },
-  { label: "Editor", value: "VSCode + Claude Code" },
-  { label: "Terminal", value: "Ghostty + zsh" },
 ];
 
 export default function Home() {
@@ -60,7 +52,7 @@ export default function Home() {
       </h1>
 
       <article>
-        <p className="my-5">
+        <p className="my-5 text-zinc-600 dark:text-zinc-400">
           You&apos;ve found my little corner of the internet. I&apos;m into{" "}
           <a href="https://gnu.org/philosophy/free-sw.html">free software</a>{" "}
           and programming. I spent years deep in the Linux rabbit
@@ -70,18 +62,45 @@ export default function Home() {
           since 2021.
         </p>
 
-        <p>
+        <p className="text-zinc-600 dark:text-zinc-400">
           I also LOOOVE self-hosting and tinkering on my homeserver. I have a
           spare VPS and also a chunky homeserver in use, on which I host all
           kinds of stuff, from Pterodactyl Minecraft servers to{" "}
           <a href="https://jellyfin.org/">Jellyfin</a>, respectively.
         </p>
 
-        <h2>skills & technologies</h2>
-        <div className="my-5 space-y-3">
+        <h2 className="mb-0!">experience</h2>
+        <div className="section-divider" />
+        <div>
+          {experience.map((job) => (
+            <div
+              key={job.company}
+              className="py-2.5 border-t border-zinc-200 dark:border-zinc-800 first:border-t-0"
+            >
+              <div className="flex justify-between items-baseline gap-4">
+                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  {job.company}
+                </span>
+                <span className="text-xs font-mono text-zinc-500 dark:text-zinc-500 shrink-0">
+                  {job.dates}
+                </span>
+              </div>
+              <p className="text-sm text-zinc-500 dark:text-zinc-500">
+                {job.role} · {job.meta}
+              </p>
+              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                {job.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <h2 className="mb-0!">skills & technologies</h2>
+        <div className="section-divider" />
+        <div className="space-y-3">
           {skills.map(({ category, items }) => (
             <div key={category} className="flex gap-4 text-sm">
-              <span className="w-24 shrink-0 text-zinc-400 dark:text-zinc-500">
+              <span className="w-28 shrink-0 text-zinc-600 dark:text-zinc-500">
                 {category}
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -100,22 +119,8 @@ export default function Home() {
             </div>
           ))}
         </div>
-
-        <h2>setup</h2>
-        <div className="my-5 space-y-2">
-          {setup.map(({ label, value }) => (
-            <div key={label} className="flex gap-4 text-sm">
-              <span className="w-24 shrink-0 text-zinc-400 dark:text-zinc-500">
-                {label}
-              </span>
-              <span className="font-mono text-sm text-zinc-700 dark:text-zinc-300">
-                {value}
-              </span>
-            </div>
-          ))}
-        </div>
         {isMobile !== null && (
-          <p className="mt-10 text-xs text-zinc-400 dark:text-zinc-600 font-mono">
+          <p className="mt-10 text-xs text-zinc-600 dark:text-zinc-500 font-mono">
             {isMobile
               ? "if you've scrolled this far, thanks for visiting. say hi sometime."
               : "if you've scrolled this far — try pressing space."}

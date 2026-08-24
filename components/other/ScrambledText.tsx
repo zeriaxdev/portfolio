@@ -28,6 +28,7 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
 
   useEffect(() => {
     if (!rootRef.current) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const split = SplitText.create(rootRef.current.querySelector('p'), {
       type: 'chars',

@@ -1,4 +1,4 @@
-import DiscordStatus from "@/components/DiscordStatus";
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   siGithub,
@@ -45,6 +45,12 @@ function LinkedInIcon({ size = 15 }: { size?: number }) {
   );
 }
 
+export const metadata: Metadata = {
+  title: "Socials",
+  description:
+    "Ways to reach zeriax — GitHub, Twitter/X, Bluesky, Matrix, Mastodon, LinkedIn, Discord.",
+};
+
 const socials = [
   {
     label: "GitHub",
@@ -86,9 +92,8 @@ const socials = [
   },
   {
     label: "Discord",
+    href: "https://discord.com/users/902605066303848458",
     handle: "@zeriax_",
-    isDiscord: true,
-    discordId: "902605066303848458",
     icon: <SimpleIcon icon={siDiscord} />,
   },
 ];
@@ -100,44 +105,25 @@ export default function Socials() {
       <p className="my-5">
         Now, here is a bajillion different ways to contact me.
       </p>
-      <ul className="space-y-2">
-        {socials.map(
-          ({ label, href, handle, rel, isDiscord, discordId, icon }) => (
-            <li key={label} className="flex items-center gap-1.5">
-              <span className="text-zinc-400 dark:text-zinc-500 text-sm w-28 shrink-0 flex items-center gap-1.5">
+      <ul className="-mx-4">
+        {socials.map(({ label, href, handle, rel, icon }) => (
+          <li key={label}>
+            <a
+              href={href}
+              target="_blank"
+              rel={`noopener noreferrer${rel ? ` ${rel}` : ""}`}
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/50"
+            >
+              <span className="text-zinc-600 dark:text-zinc-500 text-sm w-28 shrink-0 flex items-center gap-1.5">
                 {icon}
                 {label}
               </span>
-
-              {isDiscord ? (
-                <span className="inline-flex items-center gap-2 font-mono text-sm ">
-                  <a
-                    href={"https://discord.com/users/" + discordId}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-4 decoration-zinc-400
-                  dark:decoration-zinc-600 hover:decoration-zinc-700 dark:hover:decoration-zinc-300
-                  transition-colors"
-                  >
-                    {handle}
-                  </a>
-                  <DiscordStatus size={10} id={discordId} showActivity />
-                </span>
-              ) : (
-                <a
-                  href={href}
-                  target="_blank"
-                  rel={`noopener noreferrer${rel ? ` ${rel}` : ""}`}
-                  className="font-mono text-sm underline underline-offset-4 decoration-zinc-400
-                  dark:decoration-zinc-600 hover:decoration-zinc-700 dark:hover:decoration-zinc-300
-                  transition-colors"
-                >
-                  {handle}
-                </a>
-              )}
-            </li>
-          ),
-        )}
+              <span className="font-mono text-sm text-zinc-900 dark:text-zinc-100">
+                {handle}
+              </span>
+            </a>
+          </li>
+        ))}
       </ul>
       <p className="my-5">
         If this still doesn't cut it, you can have my{" "}

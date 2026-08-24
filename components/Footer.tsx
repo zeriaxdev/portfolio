@@ -22,7 +22,7 @@ export default function Footer() {
           />
           <FooterLink href="/rss.xml" label="rss" iconSVG={<RSSIcon />} />
         </ul>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">
           © 2026 MIT Licensed
         </p>
       </div>

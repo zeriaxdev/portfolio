@@ -94,7 +94,7 @@ export default function ThemeToggle() {
           className={`relative z-10 flex items-center justify-center transition-colors duration-200 ${
             theme === t
               ? "text-zinc-900 dark:text-zinc-100"
-              : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
+              : "text-zinc-500 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
           }`}
         >
           {icons[t]}

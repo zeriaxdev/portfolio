@@ -25,11 +25,17 @@
     /* expo-out: fast start, sharp deceleration at end = satisfying snap */
     animation: page-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-page-enter {
+      animation: none;
+    }
+  }
 }
 
 @layer components {
   .nav-link {
-    @apply tracking-tight transition-colors text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100;
+    @apply tracking-tight transition-colors text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100;
   }
   .nav-link-active {
     @apply tracking-tight transition-colors text-zinc-900 dark:text-zinc-100;
@@ -53,13 +59,16 @@
     @apply w-full flex flex-col md:flex-row space-x-0 md:space-x-2;
   }
   .blog-date {
-    @apply text-zinc-500 dark:text-zinc-400 w-[150px] tabular-nums;
+    @apply text-zinc-600 dark:text-zinc-400 w-[150px] tabular-nums;
+  }
+  .section-divider {
+    @apply h-px w-12 rounded-full bg-zinc-300 dark:bg-zinc-700 mt-2 mb-5;
   }
 }
 
 @layer base {
-  body {
-    @apply overflow-auto;
+  html {
+    scrollbar-gutter: stable;
   }
 
   article {
@@ -141,7 +150,7 @@
     color: oklch(55.2% 0.016 285.938);
   }
   .dark article li::marker {
-    color: oklch(55.2% 0.016 285.938);
+    color: oklch(70.5% 0.015 286.067);
   }
 
   /* Task list — checkbox only, no duplicate disc marker */
@@ -251,7 +260,7 @@
     @apply rounded-lg my-0 w-full;
   }
   article figcaption {
-    @apply mt-2.5 text-center text-sm text-zinc-500 dark:text-zinc-500;
+    @apply mt-2.5 text-center text-sm text-zinc-600 dark:text-zinc-500;
   }
   article figcaption strong {
     @apply font-semibold text-zinc-600 dark:text-zinc-400;
@@ -260,7 +269,7 @@
     @apply rounded-lg my-8;
   }
   article blockquote {
-    @apply border-l-2 border-zinc-200 dark:border-zinc-800 pl-4 py-0.5 text-zinc-500 dark:text-zinc-500 my-6 italic;
+    @apply border-l-2 border-zinc-200 dark:border-zinc-800 pl-4 py-0.5 text-zinc-600 dark:text-zinc-500 my-6 italic;
   }
   article hr {
     @apply my-8 border-t border-zinc-200 dark:border-zinc-800 rounded-full;
