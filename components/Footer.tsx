@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="mt-16 border-t border-zinc-200 pb-4 pt-8 dark:border-white/15">
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <ul className="flex items-center gap-6 text-sm text-zinc-600 dark:text-zinc-400">
+        <ul className="flex items-center gap-6 text-sm text-neutral-600 dark:text-neutral-400">
           <FooterLink
             href="https://github.com/zeriaxdev/"
             label="github"
@@ -22,7 +22,7 @@ export default function Footer() {
           />
           <FooterLink href="/rss.xml" label="rss" iconSVG={<RSSIcon />} />
         </ul>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
           © 2026 MIT Licensed
         </p>
       </div>

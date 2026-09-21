@@ -112,13 +112,13 @@ export default function Socials() {
               href={href}
               target="_blank"
               rel={`noopener noreferrer${rel ? ` ${rel}` : ""}`}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/50"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900/50"
             >
-              <span className="text-zinc-600 dark:text-zinc-500 text-sm w-28 shrink-0 flex items-center gap-1.5">
+              <span className="text-neutral-600 dark:text-neutral-500 text-sm w-28 shrink-0 flex items-center gap-1.5">
                 {icon}
                 {label}
               </span>
-              <span className="font-mono text-sm text-zinc-900 dark:text-zinc-100">
+              <span className="font-mono text-sm text-neutral-900 dark:text-neutral-100">
                 {handle}
               </span>
             </a>
@@ -129,8 +129,8 @@ export default function Socials() {
         If this still doesn't cut it, you can have my{" "}
         <Link
           href="/sshkey.txt"
-          className="underline underline-offset-4 decoration-zinc-400
-                  dark:decoration-zinc-600 hover:decoration-zinc-700 dark:hover:decoration-zinc-300
+          className="underline underline-offset-4 decoration-neutral-400
+                  dark:decoration-neutral-600 hover:decoration-neutral-700 dark:hover:decoration-neutral-300
                   transition-colors"
         >
           SSH public keys
@@ -138,8 +138,8 @@ export default function Socials() {
         and{" "}
         <Link
           href="/pgpkey.txt"
-          className="underline underline-offset-4 decoration-zinc-400
-                  dark:decoration-zinc-600 hover:decoration-zinc-700 dark:hover:decoration-zinc-300
+          className="underline underline-offset-4 decoration-neutral-400
+                  dark:decoration-neutral-600 hover:decoration-neutral-700 dark:hover:decoration-neutral-300
                   transition-colors"
         >
           PGP public keys

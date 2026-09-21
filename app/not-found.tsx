@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function NotFound() {
   return (
     <section className="mb-14">
-      <p className="mb-2 text-md text-zinc-500 dark:text-zinc-500 font-mono">
+      <p className="mb-2 text-md text-neutral-500 dark:text-neutral-500 font-mono">
         404
       </p>
       <h1 className="mb-6 text-2xl font-semibold tracking-tighter font-mono scramble">
@@ -14,7 +14,7 @@ export default function NotFound() {
         </ScrambledText>
       </h1>
       <ScrambledText
-        className="text-zinc-600 dark:text-zinc-400 leading-relaxed mb-8"
+        className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-8"
         radius={30}
         duration={3}
         speed={0.5}
@@ -26,7 +26,7 @@ export default function NotFound() {
       </ScrambledText>
       <Link
         href="/"
-        className="text-sm text-zinc-900 dark:text-zinc-100 underline underline-offset-4 decoration-zinc-400 dark:decoration-zinc-600 hover:decoration-zinc-700 dark:hover:decoration-zinc-300 transition-colors"
+        className="text-sm text-neutral-900 dark:text-neutral-100 underline underline-offset-4 decoration-neutral-400 dark:decoration-neutral-600 hover:decoration-neutral-700 dark:hover:decoration-neutral-300 transition-colors"
       >
         ← back home
       </Link>

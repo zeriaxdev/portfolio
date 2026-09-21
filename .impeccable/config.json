@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "app/globals.css"
+        ],
+        "createdAt": "2026-09-21T20:24:59.039Z",
+        "reason": "Agent: article blockquote uses a thin neutral 2px quote rule, not a colored card side tab"
+      }
+    ]
+  }
+}

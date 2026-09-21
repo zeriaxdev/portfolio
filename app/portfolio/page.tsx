@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowIcon } from "@/components/Footer";
+import DollarDeployLogo from "@/components/icons/DollarDeployLogo";
 
 export const metadata: Metadata = {
   title: "Portfolio",
@@ -13,6 +14,7 @@ interface Project {
   href: string;
   tags: string[];
   archived?: boolean;
+  icon?: React.ReactNode;
 }
 
 const projects: Project[] = [
@@ -22,6 +24,7 @@ const projects: Project[] = [
       "Assisting with DollarDeploy, a fast code-to-production app made for developers.",
     href: "https://dollardeploy.com",
     tags: ["Next.js", "TypeScript", "Design"],
+    icon: <DollarDeployLogo />,
   },
   {
     name: "ruoka-rs",
@@ -54,11 +57,11 @@ export default function Portfolio() {
             href={project.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col gap-1 px-4 py-3 rounded-xl transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/50"
+            className="group flex flex-col gap-1 px-4 py-3 rounded-xl transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900/50"
           >
             <div className="flex justify-between">
-              <div className="flex items-center gap-1.5 font-medium text-zinc-900 dark:text-zinc-100">
-                <ArrowIcon />
+              <div className="flex items-center gap-1.5 font-medium text-neutral-900 dark:text-neutral-100">
+                {project.icon ?? <ArrowIcon />}
                 {project.name}
               </div>
               {project.archived && (
@@ -72,15 +75,15 @@ export default function Portfolio() {
               )}
             </div>
 
-            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="text-sm text-neutral-600 dark:text-neutral-400">
               {project.description}
             </p>
             <div className="flex gap-2 flex-wrap mt-1">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-900
-                    text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-800"
+                  className="text-xs px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-900
+                    text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800"
                 >
                   {tag}
                 </span>

@@ -37,14 +37,14 @@ export default async function Image({
     return new ImageResponse(
       <div
         style={{
-          background: "#09090b", // zinc-950
+          background: "#0a0a0a", // neutral-950
           width: "100%",
           height: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           fontFamily: "Geist, -apple-system, BlinkMacSystemFont, sans-serif",
-          color: "#e4e4e7", // zinc-200
+          color: "#e5e5e5", // neutral-200
         }}
       >
         Not Found
@@ -67,7 +67,7 @@ export default async function Image({
   return new ImageResponse(
     <div
       style={{
-        background: "#09090b", // zinc-950
+        background: "#0a0a0a", // neutral-950
         width: "100%",
         height: "100%",
         display: "flex",
@@ -90,13 +90,13 @@ export default async function Image({
           style={{
             width: "16px",
             height: "16px",
-            background: "#e4e4e7", // zinc-200
+            background: "#e5e5e5", // neutral-200
             borderRadius: "50%",
           }}
         />
         <span
           style={{
-            color: "#a1a1aa",
+            color: "#a3a3a3", // neutral-400
             fontSize: 24,
             letterSpacing: "-0.05em",
             fontFamily: "Geist, -apple-system, BlinkMacSystemFont, sans-serif",
@@ -119,7 +119,7 @@ export default async function Image({
           style={{
             fontSize: 72,
             fontWeight: 700,
-            color: "#f4f4f5", // zinc-100
+            color: "#f5f5f5", // neutral-100
             lineHeight: 1.1,
             letterSpacing: "-0.02em",
             margin: 0,
@@ -135,7 +135,7 @@ export default async function Image({
             alignItems: "center",
             gap: "24px",
             fontSize: 32,
-            color: "#a1a1aa", // zinc-400
+            color: "#a3a3a3", // neutral-400
             marginTop: "20px",
           }}
         >
@@ -146,7 +146,7 @@ export default async function Image({
               year: "numeric",
             })}
           </span>
-          <span style={{ color: "#3f3f46" }}>•</span> {/* zinc-700 */}
+          <span style={{ color: "#404040" }}>•</span> {/* neutral-700 */}
           <span>{post.readingTime} min read</span>
         </div>
       </div>

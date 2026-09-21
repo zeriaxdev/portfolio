@@ -40,7 +40,7 @@ export function Pre({ children, ...props }: any) {
       <button
         onClick={onCopy}
         aria-label={copied ? "Copied" : "Copy code"}
-        className="absolute top-2.5 right-2.5 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-200"
+        className="absolute top-2.5 right-2.5 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-200"
       >
         {copied ? <CheckIcon /> : <CopyIcon />}
       </button>
@@ -50,7 +50,7 @@ export function Pre({ children, ...props }: any) {
 
 export function Table({ children, ...props }: any) {
   return (
-    <div className="overflow-x-auto w-full my-8 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl">
+    <div className="overflow-x-auto w-full my-8 bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-xl">
       <table className="w-full text-left border-collapse" {...props}>
         {children}
       </table>

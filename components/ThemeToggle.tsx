@@ -58,14 +58,14 @@ export default function ThemeToggle() {
     return (
       <div
         style={{ width: BTN * 3 + 6, height: BTN + 6, opacity: 0 }}
-        className="rounded-full border border-zinc-200 dark:border-zinc-900 bg-zinc-100 dark:bg-zinc-950"
+        className="rounded-full border border-neutral-200 dark:border-neutral-900 bg-neutral-100 dark:bg-neutral-950"
       />
     );
   }
 
   return (
     <div
-      className="relative flex rounded-full border border-zinc-200 dark:border-zinc-900 bg-zinc-100 dark:bg-zinc-950 p-0.5"
+      className="relative flex rounded-full border border-neutral-200 dark:border-neutral-900 bg-neutral-100 dark:bg-neutral-950 p-0.5"
       style={{
         opacity: visible ? 1 : 0,
         transition: "opacity 0.25s ease-out",
@@ -76,7 +76,7 @@ export default function ThemeToggle() {
       {/* sliding pill — width & offset are exact pixel multiples, no fractions */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-0.5 left-0.5 rounded-full bg-white dark:bg-zinc-900 transition-transform duration-200 ease-out"
+        className="pointer-events-none absolute top-0.5 left-0.5 rounded-full bg-white dark:bg-neutral-900 transition-transform duration-200 ease-out"
         style={{ width: BTN, height: BTN, transform: `translateX(${activeIndex * BTN}px)` }}
       />
       {themes.map((t) => (
@@ -93,8 +93,8 @@ export default function ThemeToggle() {
           style={{ width: BTN, height: BTN }}
           className={`relative z-10 flex items-center justify-center transition-colors duration-200 ${
             theme === t
-              ? "text-zinc-900 dark:text-zinc-100"
-              : "text-zinc-500 dark:text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-400"
+              ? "text-neutral-900 dark:text-neutral-100"
+              : "text-neutral-500 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-400"
           }`}
         >
           {icons[t]}

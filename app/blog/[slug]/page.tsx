@@ -86,14 +86,14 @@ export default async function BlogPostPage({
         {post.title}
       </h1>
       <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
           {new Date(post.date).toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
             year: "numeric",
           })}
         </p>
-        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
           {post.readingTime} min read
         </p>
       </div>
