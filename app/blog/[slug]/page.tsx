@@ -62,7 +62,7 @@ export default async function BlogPostPage({
   }
 
   return (
-    <section className="span-body">
+    <section className="span-all">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -82,22 +82,16 @@ export default async function BlogPostPage({
           }),
         }}
       />
-      <h1 className="mb-2 text-2xl font-semibold tracking-tighter">
-        {post.title}
-      </h1>
-      <div className="flex justify-between items-center mt-2 mb-8 text-sm">
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {new Date(post.date).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
+      <header className="page-head">
+        <h1 className="page-title">{post.title}</h1>
+        <p className="page-lede">
+          <time dateTime={post.date}>
+            {new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+          </time>
+          , {post.readingTime} min read
         </p>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {post.readingTime} min read
-        </p>
-      </div>
-      <article>
+      </header>
+      <article className="col">
         <MDXRemote
           source={post.content}
           options={{

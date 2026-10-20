@@ -32,7 +32,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const isDD = project.slug === "dollardeploy";
 
   return (
-    <article className="span-all">
+    <div className="span-all">
       <div className="col">
         <Link href="/portfolio" className="back">← Work</Link>
       </div>
@@ -81,6 +81,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <A href={project.href} className="quiet-btn">{sourceLabel(project.href)}</A>
         </div>
       </div>
-    </article>
+    </div>
   );
 }

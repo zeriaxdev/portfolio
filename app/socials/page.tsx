@@ -100,52 +100,29 @@ const socials = [
 
 export default function Socials() {
   return (
-    <section className="span-body">
-      <h1 className="t-title mb-[clamp(2rem,5vw,3rem)]">socials</h1>
-      <p className="my-5">
-        Now, here is a bajillion different ways to contact me.
-      </p>
-      <ul className="list">
+    <div className="span-all">
+      <header className="page-head">
+        <h1 className="page-title">Socials</h1>
+        <p className="page-lede">Now, here is a bajillion different ways to contact me.</p>
+      </header>
+      <ul className="rows col">
         {socials.map(({ label, href, handle, rel, icon }) => (
           <li key={label}>
-            <a
-              href={href}
-              target="_blank"
-              rel={`noopener noreferrer${rel ? ` ${rel}` : ""}`}
-              className="list-row flex items-center gap-3"
-            >
-              <span className="list-meta w-32 shrink-0 flex items-center gap-2">
+            <a href={href} target="_blank" rel={`noopener noreferrer${rel ? ` ${rel}` : ""}`} className="row-link">
+              <span className="row-main">
                 {icon}
                 {label}
               </span>
-              <span className="list-handle">
-                {handle}
-              </span>
+              <span className="row-side">{handle}</span>
             </a>
           </li>
         ))}
       </ul>
-      <p className="my-5">
-        If this still doesn't cut it, you can have my{" "}
-        <Link
-          href="/sshkey.txt"
-          className="underline underline-offset-4 decoration-neutral-400
-                  dark:decoration-neutral-600 hover:decoration-neutral-700 dark:hover:decoration-neutral-300
-                  transition-colors"
-        >
-          SSH public keys
-        </Link>{" "}
-        and{" "}
-        <Link
-          href="/pgpkey.txt"
-          className="underline underline-offset-4 decoration-neutral-400
-                  dark:decoration-neutral-600 hover:decoration-neutral-700 dark:hover:decoration-neutral-300
-                  transition-colors"
-        >
-          PGP public keys
-        </Link>
-        .
+      <p className="col work-also">
+        If this still doesn&apos;t cut it, you can have my{" "}
+        <Link href="/sshkey.txt" className="soft-link">SSH public keys</Link> and{" "}
+        <Link href="/pgpkey.txt" className="soft-link">PGP public keys</Link>.
       </p>
-    </section>
+    </div>
   );
 }

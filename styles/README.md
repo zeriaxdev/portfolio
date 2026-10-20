@@ -12,6 +12,7 @@
 | how headings or body text look | `typography.css` |
 | a button, row, card, the nav bar | `components.css` |
 | blog post / markdown styling | `prose.css` |
+| a page layout: home, work frames, consoles, rows | `site.css` |
 
 ## Rules
 
@@ -54,12 +55,13 @@ body paragraphs, h2 and links are all `#E6E6E6` at 14.88:1.
 
 | token | light | dark | use |
 |---|---|---|---|
-| `--fg` | 13.5:1 | 14.4:1 | **everything you read** |
-| `--fg-muted` | 4.5:1 | 8.6:1 | meta only — dates, tags, labels |
-| `--fg-faint` | 3.3:1 | 5.2:1 | decorative, never body text |
+| `--fg` | 17.9:1 | 16.9:1 | **everything you read** |
+| `--fg-muted` | 5.3:1 | 7.1:1 | notes beside work, dates, labels |
+| `--fg-faint` | 2.8:1 | 3.6:1 | decorative, never body text |
+| `--chip` | | | the soft fill of quiet buttons and the current nav item |
 
-Note `--fg` is not pure black or white — `#2E2E2E` / `#E6E6E6`. Pure white on
-near-black glares. All pass WCAG AA; keep it that way.
+Grounds are `#FFFFFF` / `#0B0B0B`; `--fg` is `#171717` / `#EDEDED`, not pure
+black or white. `--fg` and `--fg-muted` pass WCAG AA; keep it that way.
 
 ## Components
 
@@ -74,6 +76,8 @@ Each CSS block has a React component in `components/ui/`:
 
 Change the class, every instance follows. Don't style these inline.
 
-## Disposable
+## Pages
 
-`experiments.css` styles the `/try` preview routes. Delete both together.
+`site.css` holds the page compositions (design.how is the reference: centered,
+quiet, very little text, real work in frames). Consoles of real tool output
+live in `lib/work.ts` and render through `components/work/parts.tsx`.

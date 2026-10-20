@@ -31,7 +31,8 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const split = SplitText.create(rootRef.current.querySelector('p'), {
-      type: 'chars',
+      // words too, so a line can only break between words, never inside one
+      type: 'words, chars',
       charsClass: 'inline-block will-change-transform'
     });
 

@@ -11,24 +11,22 @@ export default function BlogPage() {
   const posts = getBlogPosts();
 
   return (
-    <section className="span-all">
-      <h1 className="t-title mb-[clamp(2rem,5vw,3rem)]">blog</h1>
-      <div className="list">
+    <div className="span-all">
+      <header className="page-head">
+        <h1 className="page-title">Blog</h1>
+      </header>
+      <ul className="rows col">
         {posts.map((post) => (
-          <Link key={post.slug} href={`/blog/${post.slug}`} className="list-row">
-            <div className="list-head">
-              <span className="list-title">{post.title}</span>
-              <span className="list-meta">
-                {new Date(post.date).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </span>
-            </div>
-          </Link>
+          <li key={post.slug}>
+            <Link href={`/blog/${post.slug}`} className="row-link">
+              <span className="row-main">{post.title}</span>
+              <time className="row-side" dateTime={post.date}>
+                {new Date(post.date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+              </time>
+            </Link>
+          </li>
         ))}
-      </div>
-    </section>
+      </ul>
+    </div>
   );
 }
