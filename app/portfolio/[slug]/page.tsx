@@ -1,90 +1,86 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
-import ArrowLink from "@/components/ui/ArrowLink";
+import { notFound } from "next/navigation";
+import { Compare, Motion } from "@/components/work/client";
+import { A, Console, Row } from "@/components/work/parts";
 import { projects, getProject } from "@/lib/projects";
+import { consoles, ddCase, hidden, pricingMotion, projectConsole } from "@/lib/work";
 
 export function generateStaticParams() {
-  return projects.filter((p) => p.overview).map((p) => ({ slug: p.slug }));
+  return projects.filter((p) => p.overview && !hidden.has(p.slug)).map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
   return { title: project.name, description: project.description };
 }
 
-export default async function ProjectPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+function sourceLabel(href: string) {
+  const host = new URL(href).hostname.replace(/^www\./, "");
+  return host === "github.com" ? "Source on GitHub" : `Visit ${host}`;
+}
+
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const project = getProject(slug);
   // Projects without drafted copy have nothing to show beyond the list row.
-  if (!project?.overview) notFound();
+  if (!project?.overview || hidden.has(project.slug)) notFound();
 
-  const external = new URL(project.href).hostname.replace(/^www\./, "");
+  const key = projectConsole[project.slug];
+  const isDD = project.slug === "dollardeploy";
 
   return (
-    <article className="span-body">
-      <Link href="/portfolio" className="back-link">
-        ← portfolio
-      </Link>
+    <article className="span-all">
+      <div className="col">
+        <Link href="/portfolio" className="back">← Work</Link>
+      </div>
+      <header className="page-head">
+        <h1 className="page-title">{project.name}</h1>
+        <p className="page-lede">{project.description}</p>
+      </header>
 
-      <h1 className="t-title mb-[clamp(2rem,5vw,3rem)]">{project.name}</h1>
-
-      {project.image && (
-        <div className="project-media">
-          <Image
-            src={project.image}
-            alt={project.imageAlt ?? ""}
-            width={1200}
-            height={675}
-            priority
-            sizes="(max-width: 48rem) 100vw, 40rem"
-          />
+      {isDD && (
+        <div className="col-wide project-media">
+          <figure className="work-fig">
+            <div className="frame frame-wide">
+              <Compare before={ddCase.before} after={ddCase.after} w={2000} h={1250} />
+            </div>
+            <Row name="Landing" href={ddCase.landing} note={ddCase.landingNote} />
+          </figure>
+          <figure className="work-fig">
+            <div className="frame frame-wide">
+              <Motion {...pricingMotion} />
+            </div>
+            <Row name="Pricing" href={ddCase.pricing} note={ddCase.pricingNote} />
+          </figure>
         </div>
       )}
 
-      <p className="t-body">{project.overview}</p>
+      <div className="col">
+        {key && (
+          <div className="frame project-media">
+            <Console console={consoles[key]} />
+          </div>
+        )}
 
-      {project.highlights && project.highlights.length > 0 && (
-        <section className="block" aria-labelledby="notes-heading">
-          <h2 id="notes-heading">notes</h2>
-          <ul className="project-notes">
+        <div className="project-text">
+          <p>{project.overview}</p>
+        </div>
+
+        {project.highlights && project.highlights.length > 0 && (
+          <ul className="project-list">
             {project.highlights.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-        </section>
-      )}
+        )}
 
-      <section className="block" aria-labelledby="meta-heading">
-        <h2 id="meta-heading">details</h2>
-        <dl className="stack-row">
-          <dt>Built with</dt>
-          <dd>{project.tags.join(", ")}</dd>
-        </dl>
-        <dl className="stack-row">
-          <dt>Status</dt>
-          <dd>{project.archived ? "Archived" : "Active"}</dd>
-        </dl>
-        <dl className="stack-row">
-          <dt>Source</dt>
-          <dd>
-            <ArrowLink href={project.href} external>
-              {external}
-            </ArrowLink>
-          </dd>
-        </dl>
-      </section>
+        <div className="project-foot">
+          <A href={project.href} className="quiet-btn">{sourceLabel(project.href)}</A>
+        </div>
+      </div>
     </article>
   );
 }

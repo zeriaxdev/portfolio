@@ -24,13 +24,16 @@ export const projects: Project[] = [
     slug: "dollardeploy",
     name: "DollarDeploy",
     description:
-      "Assisting with DollarDeploy, a fast code-to-production app made for developers.",
+      "Product design at work: landing, pricing, app shell, settings and the AI agent.",
     href: "https://dollardeploy.com",
     tags: ["Next.js", "TypeScript", "Design"],
     featured: true,
     overview:
-      "Where I work. DollarDeploy takes an app from a Git repo to a server you own — it provisions the box, configures HTTPS and redeploys on every push. I build and maintain the one-click templates for running AI and open-source apps on it, and do continuous UI/UX testing and code review.",
+      "Where I work, part-time since March 2025. DollarDeploy takes an app from a Git repo to a server you own — it provisions the box, configures HTTPS and redeploys on every push. I redesigned the landing and pricing pages, and inside the product the app shell, settings and the AI agent. I also build the one-click templates for running AI and open-source apps on it.",
     highlights: [
+      "Landing redesign, live since autumn 2026: dithering and a pixel serif instead of a generic AI-product look",
+      "Pricing cards whose dither lights up in each plan's colour as you reach for its button",
+      "Redesigns of the app shell, settings and the AI agent inside the product",
       "Templates for running AI and open-source apps in one click",
       "Continuous UI/UX testing and code review",
     ],
@@ -130,15 +133,17 @@ export const projects: Project[] = [
     slug: "solidtime-cli",
     name: "solidtime-cli",
     description:
-      "Report tracked hours and billable totals from solidtime, from your terminal.",
+      "Track time and report hours with solidtime from your terminal.",
     href: "https://github.com/zeriaxdev/solidtime-cli",
     tags: ["Go", "CLI"],
     overview:
-      "Answers the questions you would otherwise open the solidtime web app for: what did I work on today, how many hours did that client get last month, and what do I invoice for it. It reads the solidtime v1 API and never writes to your time entries.",
+      "Track time and report hours with solidtime from the terminal, and give scripts and AI agents a stable, non-interactive interface to it. Works with solidtime.io and self-hosted instances, and every command takes --json.",
     highlights: [
-      "A table for humans, plus TSV, CSV, JSON and Markdown for everything else",
-      "Period selection, grouping and invoice totals",
-      "Read-only by design — it cannot touch your time entries",
+      "Start and stop the timer, add past time, and edit or delete entries",
+      "Bulk edits and deletes preview what they matched and change nothing until --yes",
+      "The API token is never a command-line argument, so it stays out of your shell history",
+      "Reports with period selection, grouping and invoice totals",
+      "A doctor command that checks the token, organization and permissions",
     ],
   },
   {

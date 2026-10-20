@@ -83,6 +83,19 @@ export const projectConsole: Partial<Record<string, keyof typeof consoles>> = {
 /** Projects kept in the data but not shown on the site. */
 export const hidden = new Set(["peek", "zenith"]);
 
+/** A few words per project for list rows, design.how style. */
+export const notes: Record<string, string> = {
+  dollardeploy: "Landing, pricing and the app, at work",
+  "solidtime-cli": "Time tracking CLI in Go",
+  mcmove: "Minecraft mods to servers over SFTP",
+  "k-ruoka-scraper": "Grocery prices as an API and MCP",
+  "menu-api": "Finnish school lunches as one JSON shape",
+  "mac-schoolmenu": "School lunch in the macOS menu bar",
+  archrice: "My Arch and bspwm dotfiles",
+  "maykbot-ts": "School Discord bot, archived",
+  "ruoka-rs": "School menu CLI in Rust, archived",
+};
+
 export type Side = { src: string; label: string; alt: string };
 
 export const ddCase = {

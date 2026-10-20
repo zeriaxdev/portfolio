@@ -13,7 +13,7 @@ body { overflow-x: clip; }
 
   /* ── Columns ── */
   .col, .col-wide { width: 100%; margin-inline: auto; }
-  .col { max-width: 34rem; }
+  .col { max-width: 40rem; }
   .col-wide { max-width: 52rem; }
 
   /* ── Page head: one short title, one quiet line ── */
@@ -119,7 +119,8 @@ body { overflow-x: clip; }
   /* In the hero the consoles scale with the cloud and never wrap. */
   .home-cloud .console-bar { padding: 0.9cqi 1.4cqi; font-size: clamp(7px, 1.05cqi, 11px); }
   .home-cloud .console-body { padding: 1.2cqi 1.4cqi 1.4cqi; white-space: pre; font-size: clamp(5px, 1.02cqi, 11px); }
-  .console-line { display: block; }
+  /* Lines that still wrap (phones) hang under their first character. */
+  .console-line { display: block; padding-left: 2ch; text-indent: -2ch; }
   .tone-p { color: #7EE787; }
   .tone-c { color: #F0F3F6; font-weight: 500; }
   .tone-k { color: #E3B341; }
@@ -147,6 +148,12 @@ body { overflow-x: clip; }
     background: var(--surface-raised);
   }
   .frame > .console { width: 100%; }
+  .frame-shot {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 28px -12px rgb(0 0 0 / 0.2);
+  }
   .frame-wide { display: block; padding: 5%; }
   .work-row { display: flex; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; font-size: 0.9375rem; }
   .work-row-name { margin: 0; font-size: inherit; font-weight: 500; }
@@ -155,7 +162,8 @@ body { overflow-x: clip; }
   .work-row-note { margin: 0; color: var(--fg-muted); text-align: right; }
   .work-also { margin: 3.5rem 0 0; font-size: 0.875rem; color: var(--fg-muted); text-align: center; }
   @media (max-width: 48rem) {
-    .frame { padding: 5%; min-height: 0; }
+    .frame { padding: 4%; min-height: 0; }
+    .frame .console-body { font-size: 0.65rem; }
     .work-row { flex-direction: column; gap: 0.1rem; }
     .work-row-note { text-align: left; }
   }
