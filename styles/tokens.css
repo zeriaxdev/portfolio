@@ -19,17 +19,20 @@
   --grey-100: #FFFFFF;
 
   /* ── Semantic. USE THESE. Contrast measured vs the surface. ─────────── */
-  --surface:        var(--grey-97);   /* page background            */
-  --surface-raised: var(--grey-100);/* cards, popovers, code      */
-  --fg:             var(--grey-82);  /* 12.9:1  ALL reading text   */
-  --fg-muted:       var(--grey-45);       /*  4.8:1  meta only          */
-  --fg-faint:       var(--grey-55);       /*  3.2:1  decorative only    */
-  --rule:           var(--grey-88);
+  --surface:        #FFFFFF;          /* page background            */
+  --surface-raised: #FAFAFA;          /* frames behind work         */
+  --fg:             #171717;          /* 17.9:1  ALL reading text   */
+  --fg-muted:       #6B6B6B;          /*  5.3:1  notes, meta        */
+  --fg-faint:       #9A9A9A;          /*  2.8:1  decorative only    */
+  --rule:           #EBEBEB;
+  --chip:           #F2F2F2;          /* quiet button / nav fill    */
 
-  --btn-bg:        var(--surface);
-  --btn-fg:        var(--fg);
-  --btn-bg-active: var(--fg);
-  --btn-fg-active: var(--surface);
+  /* Quiet chrome, like design.how: labels sit on nothing until hovered
+     or current, then get a soft chip. */
+  --btn-bg:        transparent;
+  --btn-fg:        var(--fg-muted);
+  --btn-bg-active: var(--chip);
+  --btn-fg-active: var(--fg);
 
   /* ── No accent in the chrome. Emphasis comes from inverting ground and
      figure, the way base-ui.com does it. This is kept only for genuinely
@@ -64,10 +67,11 @@
 
 /* ── Dark theme: the same semantic names, different values. ───────────── */
 .dark {
-  --surface:        var(--grey-0);  /* their --color-background: black */
-  --surface-raised: var(--grey-5);     /* #131313                        */
-  --fg:             var(--grey-90);     /* 16.8:1  #E6E6E6                */
-  --fg-muted:       var(--grey-70);     /* 10.0:1  #B3B3B3                */
-  --fg-faint:       var(--grey-60);     /*  7.4:1  #999999                */
-  --rule:           #262626;
+  --surface:        #0B0B0B;
+  --surface-raised: #131313;
+  --fg:             #EDEDED;          /* 16.9:1 */
+  --fg-muted:       #9B9B9B;          /*  7.1:1 */
+  --fg-faint:       #6E6E6E;          /*  3.6:1  decorative only */
+  --rule:           #222222;
+  --chip:           #1C1C1C;
 }

@@ -11,8 +11,8 @@ function Themed({ src, alt, w, h }: { src: string; alt: string; w: number; h: nu
   const common = { width: w, height: h, alt, sizes: "(max-width: 48rem) 100vw, 48rem" };
   return (
     <>
-      <Image {...common} alt={alt} src={`${src}-light.webp`} className="ov-only-light" />
-      <Image {...common} alt={alt} src={`${src}-dark.webp`} className="ov-only-dark" />
+      <Image {...common} alt={alt} src={`${src}-light.webp`} className="only-light" />
+      <Image {...common} alt={alt} src={`${src}-dark.webp`} className="only-dark" />
     </>
   );
 }
@@ -23,16 +23,16 @@ function Themed({ src, alt, w, h }: { src: string; alt: string; w: number; h: nu
 export function Compare({ before, after, w, h }: { before: Side; after: Side; w: number; h: number }) {
   const [pos, setPos] = useState(50);
   return (
-    <div className="ov-cmp" style={{ "--pos": `${pos}%` } as CSSProperties}>
-      <div className="ov-cmp-side ov-cmp-after">
+    <div className="compare" style={{ "--pos": `${pos}%` } as CSSProperties}>
+      <div className="compare-side compare-after">
         <Themed src={after.src} alt={after.alt} w={w} h={h} />
-        <span className="ov-cmp-tag">{after.label}</span>
+        <span className="compare-tag">{after.label}</span>
       </div>
-      <div className="ov-cmp-side ov-cmp-before">
+      <div className="compare-side compare-before">
         <Themed src={before.src} alt={before.alt} w={w} h={h} />
-        <span className="ov-cmp-tag">{before.label}</span>
+        <span className="compare-tag">{before.label}</span>
       </div>
-      <span className="ov-cmp-line" aria-hidden />
+      <span className="compare-line" aria-hidden />
       <input
         type="range"
         min={0}
@@ -41,7 +41,7 @@ export function Compare({ before, after, w, h }: { before: Side; after: Side; w:
         onChange={(e) => setPos(Number(e.target.value))}
         aria-label={`Compare ${before.label} with ${after.label}`}
         aria-valuetext={`${pos}% ${before.label}`}
-        className="ov-cmp-range"
+        className="compare-range"
       />
     </div>
   );
@@ -79,7 +79,7 @@ export function Motion({ src, w, h, label, className = "" }: { src: string; w: n
   const reduced = useReducedMotion();
   const ref = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
-  const base = `/work/overnight/${src}-${theme}`;
+  const base = `/work/${src}-${theme}`;
 
   const toggle = () => {
     const v = ref.current;
@@ -89,11 +89,11 @@ export function Motion({ src, w, h, label, className = "" }: { src: string; w: n
   };
 
   return (
-    <span className={`ov-motion ${className}`}>
+    <span className={`motion ${className}`}>
       <video
         key={`${base}-${reduced}`}
         ref={ref}
-        className="ov-video"
+        className="motion-video"
         width={w}
         height={h}
         poster={`${base}-poster.webp`}
@@ -108,7 +108,7 @@ export function Motion({ src, w, h, label, className = "" }: { src: string; w: n
       >
         <source src={`${base}.mp4`} type="video/mp4" />
       </video>
-      <button type="button" className="ov-motion-btn" onClick={toggle} aria-label={playing ? "Pause recording" : "Play recording"}>
+      <button type="button" className="motion-btn" onClick={toggle} aria-label={playing ? "Pause recording" : "Play recording"}>
         <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden>
           {playing ? <path d="M3 2h2v8H3zM7 2h2v8H7z" /> : <path d="M3 1.5v9l7.5-4.5z" />}
         </svg>

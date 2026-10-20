@@ -7,7 +7,7 @@
      styles/base.css         element defaults
      styles/motion.css       page transition
      styles/prose.css        MDX + syntax highlighting
-     styles/experiments.css  throwaway /try previews
+     styles/site.css         page compositions: home, work, rows
    ═══════════════════════════════════════════════════════════════════════ */
 
 @import "tailwindcss";
@@ -18,7 +18,7 @@
 @import "../styles/components.css";
 @import "../styles/motion.css";
 @import "../styles/prose.css";
-@import "../styles/experiments.css";
+@import "../styles/site.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

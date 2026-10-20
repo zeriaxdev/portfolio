@@ -1,110 +1,82 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useIsMobile } from "@/hooks/useIsMobile";
-import ProjectList from "@/components/ProjectList";
-import Section from "@/components/ui/Section";
-import ArrowLink from "@/components/ui/ArrowLink";
+import { Compare, Motion } from "@/components/work/client";
+import { A, Console, Row } from "@/components/work/parts";
+import { consoles, ddCase, pricingMotion } from "@/lib/work";
 
-const greetings = ["hi", "hello", "hey", "moi", "morjens", "moro", "terve"];
-
-const experience = [
-  {
-    company: "DollarDeploy",
-    role: "Junior Product Designer, Customer Solutions Intern",
-    meta: "Part-time · Hybrid",
-    dates: "Mar 2025 – Present",
-    description:
-      "Implemented templates for running AI and open-source apps. Continuous UI/UX testing and code review.",
-  },
-];
-
-const skills = [
-  { category: "Languages", items: ["TypeScript", "Rust", "Swift", "Go", "Python", "HTML/CSS"] },
-  { category: "Frameworks", items: ["Next.js", "React", "Astro", "Bun", "Discord.js"] },
-  { category: "Infra", items: ["Docker", "Redis", "GitHub Actions", "Hetzner", "Pterodactyl"] },
-  { category: "Databases", items: ["PostgreSQL", "MongoDB"] },
+const more = [
+  { href: "/portfolio/solidtime-cli", label: "solidtime-cli" },
+  { href: "/portfolio/mcmove", label: "mcmove" },
+  { href: "/portfolio/k-ruoka-scraper", label: "k-ruoka-scraper" },
+  { href: "/portfolio/mac-schoolmenu", label: "mac-schoolmenu" },
 ];
 
 export default function Home() {
-  const [greeting, setGreeting] = useState<string | null>(null);
-  const isMobile = useIsMobile();
-
-  useEffect(() => {
-    setGreeting(greetings[Math.floor(Math.random() * greetings.length)]);
-  }, []);
-
   return (
-    <>
-      <div className="span-hero">
-        <h1
-          className="t-display transition-opacity"
-          style={{ opacity: greeting !== null ? 1 : 0 }}
-        >
-          {greeting ?? "hi"}, i&apos;m zeriax — I design and build small tools
-          for things people use every day.
-        </h1>
-        <p className="mt-[clamp(1.5rem,3vw,2.25rem)]">
-          <ArrowLink href="/portfolio">See the work</ArrowLink>
+    <div className="span-all">
+      <section className="home-hero" aria-labelledby="home-title">
+        <div className="home-cloud" aria-hidden>
+          <Console console={consoles.mcmove} className="home-c1" />
+          <Console console={consoles.solidtime} className="home-c2" />
+          <Console console={consoles.kruoka} className="home-c3" />
+        </div>
+        <p className="home-credit">Real output from three of my tools</p>
+        <h1 id="home-title" className="home-title">Hi, I&apos;m zeriax.</h1>
+        <p className="home-sub">
+          I&apos;m a student who designs and builds small tools for things people use every day,
+          and a part-time product designer at DollarDeploy.
         </p>
-      </div>
+        <div className="actions">
+          <A href="#work" className="quiet-btn">See the work</A>
+          <A href="mailto:contact@zeriax.com" className="quiet-btn">Email me</A>
+        </div>
+      </section>
 
-      <div className="span-body pt-[clamp(4rem,9vw,7rem)] t-stack">
-        <p className="t-body">
-          Student working across product design and software engineering.
-          Most of what I build is unglamorous and Finnish: lunch menus, grocery
-          prices, library catalogues, apartment listings — scraped, normalised,
-          and served as something you can actually query.
-        </p>
-        <p className="t-body">
-          I spent years deep in the Linux rabbit hole — Arch, ricing, bspwm, the
-          works — before settling on macOS. That&apos;s where the taste for small,
-          fast, dependency-free tools comes from. Programming since 2021.
-        </p>
-        <p className="t-body">
-          I also LOOOVE self-hosting. A spare VPS and a chunky homeserver run
-          everything from Pterodactyl Minecraft servers to{" "}
-          <a href="https://jellyfin.org/" className="t-link">Jellyfin</a>, which is
-          how half these projects start — something annoyed me on my own box.
-        </p>
-      </div>
+      <section id="work" className="work col-wide" aria-labelledby="dd-title">
+        <header className="work-head">
+          <h2 id="dd-title" className="section-title">DollarDeploy</h2>
+          <p className="work-meta">
+            Product designer since 2025, working on the landing, pricing, app shell, settings and AI agent.
+          </p>
+        </header>
 
-      <Section label="Selected work">
-        <ProjectList only="featured" />
-      </Section>
+        <figure className="work-fig">
+          <div className="frame frame-wide">
+            <Compare before={ddCase.before} after={ddCase.after} w={2000} h={1250} />
+          </div>
+          <Row name="Landing" href={ddCase.landing} note={ddCase.landingNote} />
+        </figure>
 
-      <Section label="Experience">
-        {experience.map((job) => (
-          <article key={job.company} className="entry">
-            <div className="entry-top">
-              <h3>{job.company}</h3>
-              <time>{job.dates}</time>
-            </div>
-            <p className="role">
-              {job.role} · {job.meta}
-            </p>
-            <p className="desc">{job.description}</p>
-          </article>
-        ))}
-      </Section>
+        <figure className="work-fig">
+          <div className="frame frame-wide">
+            <Motion {...pricingMotion} />
+          </div>
+          <Row name="Pricing" href={ddCase.pricing} note={ddCase.pricingNote} />
+        </figure>
+      </section>
 
-      <Section label="Stack">
-        <dl>
-          {skills.map(({ category, items }) => (
-            <div key={category} className="stack-row">
-              <dt>{category}</dt>
-              <dd>{items.join(", ")}</dd>
-            </div>
+      <section className="work col" aria-labelledby="more-title">
+        <h2 id="more-title" className="section-title">More</h2>
+        <figure className="work-fig">
+          <div className="frame">
+            <Console console={consoles.menu} />
+          </div>
+          <Row name="menu-api" href="/portfolio/menu-api" note="Finnish school lunches as one JSON shape" />
+        </figure>
+        <p className="work-also">
+          Also{" "}
+          {more.map((l, i) => (
+            <span key={l.href}>
+              <A href={l.href} className="soft-link">{l.label}</A>
+              {i < more.length - 2 ? ", " : i === more.length - 2 ? " and " : ". "}
+            </span>
           ))}
-        </dl>
-      </Section>
-
-      {isMobile !== null && (
-        <p className="span-body pt-[clamp(3rem,8vw,5rem)] font-mono text-[0.8125rem] text-fg-faint">
-          {isMobile
-            ? "if you've scrolled this far, thanks for visiting. say hi sometime."
-            : "if you've scrolled this far — try pressing space."}
+          <A href="/portfolio" className="soft-link">See all work</A>
         </p>
-      )}
-    </>
+      </section>
+
+      <p className="home-hint">
+        <span className="home-hint-key">If you&apos;ve scrolled this far, try pressing space.</span>
+        <span className="home-hint-touch">If you&apos;ve scrolled this far, thanks for visiting. Say hi sometime.</span>
+      </p>
+    </div>
   );
 }
