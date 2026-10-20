@@ -1,0 +1,23 @@
+/* Element defaults. Everything else is a token or a component. */
+
+@layer base {
+  html { scrollbar-gutter: stable; }
+
+  body {
+    background: var(--surface);
+    color: var(--fg);
+    /* Root only — never per component. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--fg);
+    color: var(--surface);
+  }
+
+  input[type="checkbox"] {
+    @apply w-4 h-4 accent-neutral-900 dark:accent-neutral-100;
+  }
+}

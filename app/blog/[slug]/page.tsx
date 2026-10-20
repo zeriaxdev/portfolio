@@ -62,7 +62,7 @@ export default async function BlogPostPage({
   }
 
   return (
-    <section>
+    <section className="span-body">
       <script
         type="application/ld+json"
         suppressHydrationWarning

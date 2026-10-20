@@ -1,290 +1,36 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Entry point only. Nothing is defined here — open the file you need:
+
+     styles/tokens.css       colours, type scale, spacing   ← start here
+     styles/typography.css   .t-display / .t-body / ...
+     styles/components.css   .btn / .list-row / .section / ...
+     styles/base.css         element defaults
+     styles/motion.css       page transition
+     styles/prose.css        MDX + syntax highlighting
+     styles/experiments.css  throwaway /try previews
+   ═══════════════════════════════════════════════════════════════════════ */
+
 @import "tailwindcss";
+
+@import "../styles/tokens.css";
+@import "../styles/base.css";
+@import "../styles/typography.css";
+@import "../styles/components.css";
+@import "../styles/motion.css";
+@import "../styles/prose.css";
+@import "../styles/experiments.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Expose tokens to Tailwind so `text-fg-muted`, `bg-surface` etc. work. */
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-ibm-plex-mono);
-}
 
-@keyframes page-enter {
-  from {
-    opacity: 0;
-    filter: blur(6px);
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0px);
-    transform: translateY(0);
-  }
-}
-
-@layer utilities {
-  .animate-page-enter {
-    /* expo-out: fast start, sharp deceleration at end = satisfying snap */
-    animation: page-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .animate-page-enter {
-      animation: none;
-    }
-  }
-}
-
-@layer components {
-  .nav-link {
-    @apply tracking-tight transition-colors text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100;
-  }
-  .nav-link-active {
-    @apply tracking-tight transition-colors text-neutral-900 dark:text-neutral-100;
-  }
-  .footer-link {
-    @apply flex items-center gap-1.5 transition-colors hover:text-neutral-900 dark:hover:text-neutral-100;
-  }
-  .link {
-    @apply underline decoration-neutral-400 dark:decoration-neutral-600 hover:decoration-neutral-700 dark:hover:decoration-neutral-300 underline-offset-4 transition-colors;
-  }
-  .text-secondary {
-    @apply text-neutral-600 dark:text-neutral-400;
-  }
-  .text-primary {
-    @apply text-neutral-900 dark:text-neutral-100 tracking-tight;
-  }
-  .blog-item {
-    @apply flex flex-col space-y-1 mb-4 transition-opacity hover:opacity-80;
-  }
-  .blog-item-inner {
-    @apply w-full flex flex-col md:flex-row space-x-0 md:space-x-2;
-  }
-  .blog-date {
-    @apply text-neutral-600 dark:text-neutral-400 w-[150px] tabular-nums;
-  }
-  .section-divider {
-    @apply h-px w-12 rounded-full bg-neutral-300 dark:bg-neutral-700 mt-2 mb-5;
-  }
-}
-
-@layer base {
-  html {
-    scrollbar-gutter: stable;
-  }
-
-  article {
-    @apply text-neutral-800 dark:text-neutral-200 leading-relaxed;
-  }
-
-  article h1, article h2, article h3, article h4 {
-    @apply font-medium tracking-tighter text-neutral-900 dark:text-neutral-100 mt-8 mb-4;
-  }
-  article h2 { @apply text-xl; }
-  article h3 { @apply text-lg; }
-  article h2, article h3, article h4 {
-    @apply relative scroll-mt-20;
-  }
-
-  /* Whole heading is the anchor — wrap behavior */
-  article h2 a.heading-anchor,
-  article h3 a.heading-anchor,
-  article h4 a.heading-anchor {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    position: relative;
-  }
-  article h2 a.heading-anchor::before,
-  article h3 a.heading-anchor::before,
-  article h4 a.heading-anchor::before {
-    position: absolute;
-    left: -1.1em;
-    top: 0;
-    content: "#";
-    font-weight: 400;
-    font-size: 1em;
-    line-height: inherit;
-    opacity: 0;
-    color: #a1a1aa;
-    transition: opacity 0.15s ease;
-  }
-  .dark article h2 a.heading-anchor::before,
-  .dark article h3 a.heading-anchor::before,
-  .dark article h4 a.heading-anchor::before {
-    color: #71717a;
-  }
-  article h2:hover a.heading-anchor::before,
-  article h3:hover a.heading-anchor::before,
-  article h4:hover a.heading-anchor::before {
-    opacity: 1;
-  }
-
-  article p {
-    @apply my-3;
-  }
-
-  article a {
-    @apply text-neutral-900 dark:text-neutral-100 underline decoration-neutral-400 dark:decoration-neutral-600 hover:decoration-neutral-700 dark:hover:decoration-neutral-300 underline-offset-4 transition-colors;
-  }
-  article h2 a.heading-anchor,
-  article h3 a.heading-anchor,
-  article h4 a.heading-anchor {
-    text-decoration: none;
-  }
-
-  /* Lists */
-  article ul {
-    list-style-type: disc;
-    padding-left: 1.25rem;
-    margin-bottom: 1rem;
-  }
-  article ol {
-    list-style-type: decimal;
-    padding-left: 1.25rem;
-    margin-bottom: 1rem;
-  }
-  article ul li,
-  article ol li {
-    margin-bottom: 0.3rem;
-  }
-  article li::marker {
-    color: oklch(55.2% 0.016 285.938);
-  }
-  .dark article li::marker {
-    color: oklch(70.5% 0.015 286.067);
-  }
-
-  /* Task list — checkbox only, no duplicate disc marker */
-  article li.task-list-item {
-    list-style: none;
-    padding-left: 0;
-  }
-  article li.task-list-item input[type="checkbox"] {
-    width: 0.8em;
-    height: 0.8em;
-    margin-right: 0.5em;
-    vertical-align: -0.05em;
-    flex-shrink: 0;
-    accent-color: #18181b;
-    cursor: default;
-  }
-  .dark article li.task-list-item input[type="checkbox"] {
-    accent-color: #f4f4f5;
-  }
-
-  /* Code */
-  article code {
-    @apply bg-neutral-100 dark:bg-neutral-900 px-1.5 py-0.5 rounded-md text-sm font-mono border border-neutral-200 dark:border-neutral-800;
-  }
-  article pre {
-    @apply bg-neutral-100 dark:bg-neutral-900 p-4 rounded-xl overflow-x-auto mb-4 border border-neutral-200 dark:border-neutral-800;
-  }
-  article pre code {
-    @apply p-0 bg-transparent border-none text-sm leading-relaxed rounded-none;
-  }
-
-  /* ─── Syntax highlighting ─────────────────────────────────────────────────
-     Light: github palette  |  Dark: github-dark palette
-  ─────────────────────────────────────────────────────────────────────────── */
-
-  .hljs {
-    background: transparent !important;
-    padding: 0 !important;
-    color: #24292e;
-  }
-  .dark .hljs { color: #e6edf3; }
-
-  .hljs-comment, .hljs-blockquote                              { color: #6a737d; }
-  .dark .hljs-comment, .dark .hljs-blockquote                  { color: #8b949e; }
-
-  .hljs-keyword, .hljs-selector-tag, .hljs-type,
-  .hljs-doctag, .hljs-template-tag, .hljs-template-variable   { color: #d73a49; }
-  .dark .hljs-keyword, .dark .hljs-selector-tag, .dark .hljs-type,
-  .dark .hljs-doctag, .dark .hljs-template-tag,
-  .dark .hljs-template-variable                                { color: #ff7b72; }
-
-  .hljs-string, .hljs-regexp                                   { color: #032f62; }
-  .dark .hljs-string, .dark .hljs-regexp                       { color: #a5d6ff; }
-
-  .hljs-number, .hljs-literal, .hljs-operator,
-  .hljs-attr, .hljs-attribute,
-  .hljs-selector-attr, .hljs-selector-class,
-  .hljs-selector-id, .hljs-meta                                { color: #005cc5; }
-  .dark .hljs-number, .dark .hljs-literal, .dark .hljs-operator,
-  .dark .hljs-attr, .dark .hljs-attribute,
-  .dark .hljs-selector-attr, .dark .hljs-selector-class,
-  .dark .hljs-selector-id, .dark .hljs-meta                    { color: #79c0ff; }
-
-  .hljs-variable                                               { color: #e36209; }
-  .dark .hljs-variable                                         { color: #ffa657; }
-  .hljs-variable.language_                                     { color: #d73a49; }
-  .dark .hljs-variable.language_                               { color: #ff7b72; }
-
-  .hljs-title, .hljs-title.class_,
-  .hljs-title.class_.inherited__, .hljs-title.function_        { color: #6f42c1; }
-  .dark .hljs-title, .dark .hljs-title.class_,
-  .dark .hljs-title.class_.inherited__,
-  .dark .hljs-title.function_                                  { color: #d2a8ff; }
-
-  .hljs-name, .hljs-tag, .hljs-selector-pseudo,
-  .hljs-selector-tag, .hljs-quote                              { color: #22863a; }
-  .dark .hljs-name, .dark .hljs-tag, .dark .hljs-selector-pseudo,
-  .dark .hljs-quote                                            { color: #7ee787; }
-
-  .hljs-built_in, .hljs-builtin-name, .hljs-symbol            { color: #e36209; }
-  .dark .hljs-built_in, .dark .hljs-builtin-name,
-  .dark .hljs-symbol                                           { color: #ffa657; }
-
-  .hljs-bullet                                                 { color: #735c0f; }
-  .dark .hljs-bullet                                           { color: #f2cc60; }
-  .hljs-section                                                { color: #005cc5; }
-  .dark .hljs-section                                          { color: #1f6feb; }
-
-  .hljs-subst, .hljs-params, .hljs-punctuation, .hljs-tag     { color: inherit; }
-  .dark .hljs-subst, .dark .hljs-params,
-  .dark .hljs-punctuation                                      { color: #e6edf3; }
-
-  .hljs-addition { color: #22863a; background-color: #f0fff4; }
-  .hljs-deletion  { color: #b31d28; background-color: #ffeef0; }
-  .dark .hljs-addition { color: #aff5b4; background-color: #033a16; }
-  .dark .hljs-deletion  { color: #ffdcd7; background-color: #67060c; }
-
-  .hljs-emphasis { font-style: italic; }
-  .hljs-strong   { font-weight: bold; }
-
-  /* ────────────────────────────────────────────────────────────────────────── */
-
-  article figure {
-    @apply my-8;
-  }
-  article figure img {
-    @apply rounded-lg my-0 w-full;
-  }
-  article figcaption {
-    @apply mt-2.5 text-center text-sm text-neutral-600 dark:text-neutral-500;
-  }
-  article figcaption strong {
-    @apply font-semibold text-neutral-600 dark:text-neutral-400;
-  }
-  article img {
-    @apply rounded-lg my-8;
-  }
-  article blockquote {
-    @apply border-l-2 border-neutral-200 dark:border-neutral-800 pl-4 py-0.5 text-neutral-600 dark:text-neutral-500 my-6 italic;
-  }
-  article hr {
-    @apply my-8 border-t border-neutral-200 dark:border-neutral-800 rounded-full;
-  }
-  article th {
-    @apply py-3 px-4 border-b border-neutral-200 dark:border-neutral-800 font-semibold text-neutral-900 dark:text-neutral-100 bg-neutral-100/50 dark:bg-neutral-900/50 first:rounded-tl-xl last:rounded-tr-xl;
-  }
-  article td {
-    @apply py-3 px-4 border-b border-neutral-200 dark:border-neutral-800 border-t-0;
-  }
-  article tr:last-child td {
-    @apply border-b-0;
-  }
-
-  input[type="checkbox"] {
-    @apply w-4 h-4 accent-neutral-900 dark:accent-neutral-100;
-  }
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-signal: var(--signal);
 }

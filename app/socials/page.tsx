@@ -100,25 +100,25 @@ const socials = [
 
 export default function Socials() {
   return (
-    <section>
-      <h1 className="mb-8 text-2xl font-semibold tracking-tighter">socials</h1>
+    <section className="span-body">
+      <h1 className="t-title mb-[clamp(2rem,5vw,3rem)]">socials</h1>
       <p className="my-5">
         Now, here is a bajillion different ways to contact me.
       </p>
-      <ul className="-mx-4">
+      <ul className="list">
         {socials.map(({ label, href, handle, rel, icon }) => (
           <li key={label}>
             <a
               href={href}
               target="_blank"
               rel={`noopener noreferrer${rel ? ` ${rel}` : ""}`}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900/50"
+              className="list-row flex items-center gap-3"
             >
-              <span className="text-neutral-600 dark:text-neutral-500 text-sm w-28 shrink-0 flex items-center gap-1.5">
+              <span className="list-meta w-32 shrink-0 flex items-center gap-2">
                 {icon}
                 {label}
               </span>
-              <span className="font-mono text-sm text-neutral-900 dark:text-neutral-100">
+              <span className="list-handle">
                 {handle}
               </span>
             </a>

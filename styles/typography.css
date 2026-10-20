@@ -1,0 +1,101 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY — four sizes, one colour.
+
+   Hierarchy comes from SIZE and WEIGHT, never from dimming text.
+   Body copy is full contrast. --fg-muted is for meta only (dates, tags).
+
+     .t-display   hero, once per page          42px
+     .t-title     page title                   27px
+     .t-heading   section / card heading       18px medium
+     .t-body      paragraphs                   18px
+     .t-small     labels, secondary            15px
+     .t-mono      dates, tags, meta            13px  ← the only muted one
+     .t-link      inline link
+     .t-stack     wraps paragraphs, spaces them
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* Shared base. Every .t-* inherits these. */
+  .t-display, .t-title, .t-heading, .t-body, .t-small, .t-link {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 400;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  .t-display {
+    font-size: clamp(var(--text-3), 4.2vw, var(--text-4));
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .t-title {
+    font-size: clamp(var(--text-2), 3.4vw, var(--text-3));
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .t-heading {
+    font-size: var(--text-2);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .t-body {
+    max-width: var(--measure);
+    font-size: var(--text-2);
+    line-height: 1.4;
+  }
+
+  .t-small {
+    font-size: var(--text-1);
+    line-height: 1.45;
+  }
+
+  /* The one place dimmed text is correct: machine-ish metadata. */
+  .t-mono {
+    font-family: var(--font-mono);
+    font-size: var(--text-mono);
+    line-height: 1.4;
+    color: var(--fg-muted);
+  }
+
+  .t-stack { display: flex; flex-direction: column; gap: 1.1rem; }
+
+  /* Ground and figure swapped. Use anywhere you'd reach for "invert". */
+  .invert { background-color: var(--fg); color: var(--surface); }
+
+  .t-link {
+    text-decoration: underline;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: 1px;
+    /* 2px off the baseline. 0.22em (≈4px) read as a bar floating under the
+       text; their footer links sit tight to it. */
+    text-underline-offset: 2px;
+    text-decoration-color: currentColor;
+  }
+  /* Underline clears on hover, fills on press. */
+  .t-link:hover { text-decoration-color: transparent; }
+  .t-link:focus-visible { outline: 1px solid var(--fg); outline-offset: 3px; }
+  /* Pressed: fill with the text colour and flip the label to the ground.
+     `background: currentColor` + a new `color` is circular — currentColor
+     resolves to this element's own colour, so both would end up the same.
+     Name the token pair instead; that IS the non-literal invert. */
+  .t-link:active {
+    background-color: var(--fg);
+    color: var(--surface);
+    text-decoration-color: transparent;
+    /* Padding gives the fill some air; the matching negative margin means
+       pressing doesn't reflow the line. Both are needed — the margin alone
+       pulls neighbouring text in. */
+    padding-inline: 0.15em;
+    margin-inline: -0.15em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+}

@@ -1,0 +1,73 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOKENS — the only file you need to open to restyle the whole site.
+   Change a value here and every component follows. Nothing else hardcodes.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Neutral ramp, named by lightness. Raw — don't use in components. ── */
+  --grey-0:   #000000;
+  --grey-5:   #131313;
+  --grey-10:  #212121;
+  --grey-45:  #6E6E6E;
+  --grey-55:  #8C8C8C;
+  --grey-60:  #999999;
+  --grey-70:  #B3B3B3;
+  --grey-82:  #2E2E2E;   /* light-mode foreground */
+  --grey-88:  #E0E0E0;
+  --grey-90:  #E6E6E6;
+  --grey-97:  #F9F9F9;
+  --grey-100: #FFFFFF;
+
+  /* ── Semantic. USE THESE. Contrast measured vs the surface. ─────────── */
+  --surface:        var(--grey-97);   /* page background            */
+  --surface-raised: var(--grey-100);/* cards, popovers, code      */
+  --fg:             var(--grey-82);  /* 12.9:1  ALL reading text   */
+  --fg-muted:       var(--grey-45);       /*  4.8:1  meta only          */
+  --fg-faint:       var(--grey-55);       /*  3.2:1  decorative only    */
+  --rule:           var(--grey-88);
+
+  --btn-bg:        var(--surface);
+  --btn-fg:        var(--fg);
+  --btn-bg-active: var(--fg);
+  --btn-fg-active: var(--surface);
+
+  /* ── No accent in the chrome. Emphasis comes from inverting ground and
+     figure, the way base-ui.com does it. This is kept only for genuinely
+     semantic signals (a failing contrast check on /dev), never decoration. */
+  --signal: #E43411;
+
+  /* ── Type scale. Named by the px size it produces. ───────────────────── */
+  --text-1: 0.9375rem;  /* 15px — labels, meta, footer      */
+  --text-2: 1.125rem;   /* 18px — body, headings, links     */
+  --text-3: 1.6875rem;  /* 27px — page titles               */
+  --text-4: 2.625rem;   /* 42px — hero, desktop only        */
+  --text-mono: 0.8125rem;
+
+  /* ── Spacing. Every gap and pad comes from here. ─────────────────────── */
+  --space-1: 0.25rem;   /*  4px  within a control          */
+  --space-2: 0.5rem;    /*  8px  between related controls  */
+  --space-3: 0.75rem;   /* 12px                            */
+  --space-4: 1rem;      /* 16px  between elements          */
+  --space-6: 1.5rem;    /* 24px                            */
+  --space-8: 2rem;      /* 32px  between groups            */
+  --space-12: 3rem;     /* 48px                            */
+  --space-16: 4rem;     /* 64px  between sections, small   */
+  --space-24: 6rem;     /* 96px  between sections          */
+  --space-36: 9rem;     /* 144px between sections, large   */
+
+  /* ── Layout ──────────────────────────────────────────────────────────── */
+  --gutter:    clamp(1.25rem, 4vw, 3rem);
+  --max-width: 1480px;
+  --measure:   62ch;   /* readable line length */
+  --bar-h:     36px;   /* corner bar height    */
+}
+
+/* ── Dark theme: the same semantic names, different values. ───────────── */
+.dark {
+  --surface:        var(--grey-0);  /* their --color-background: black */
+  --surface-raised: var(--grey-5);     /* #131313                        */
+  --fg:             var(--grey-90);     /* 16.8:1  #E6E6E6                */
+  --fg-muted:       var(--grey-70);     /* 10.0:1  #B3B3B3                */
+  --fg-faint:       var(--grey-60);     /*  7.4:1  #999999                */
+  --rule:           #262626;
+}

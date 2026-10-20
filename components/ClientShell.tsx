@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Header from "@/components/Header";
+import CornerNav from "@/components/CornerNav";
+import CommandPalette from "@/components/CommandPalette";
 import Footer from "@/components/Footer";
 
 const Dither = dynamic(() => import("@/components/other/Dither"), { ssr: false });
@@ -116,16 +117,13 @@ function BackgroundDither() {
 
 export default function ClientShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-
   return (
     <ThemeProvider>
       <BackgroundDither />
-      <div className="mx-auto flex min-h-screen max-w-2xl flex-col px-4 pt-8">
-        <Header />
-        <main
-          key={pathname}
-          className="flex-1 animate-page-enter"
-        >
+      <div className="shell">
+        <CornerNav />
+        <CommandPalette />
+        <main key={pathname} className="flex-1 animate-page-enter wrap">
           {children}
         </main>
         <Footer />

@@ -45,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${ibmPlexMono.variable} antialiased bg-zinc-50 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-zinc-50 dark:bg-black dark:text-zinc-100 dark:selection:bg-zinc-100 dark:selection:text-zinc-900`}
+        className={`${geistSans.variable} ${ibmPlexMono.variable} antialiased font-sans`}
       >
         <ClientShell>{children}</ClientShell>
       </body>

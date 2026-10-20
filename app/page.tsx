@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import ProjectList from "@/components/ProjectList";
+import Section from "@/components/ui/Section";
+import ArrowLink from "@/components/ui/ArrowLink";
 
 const greetings = ["hi", "hello", "hey", "moi", "morjens", "moro", "terve"];
 
@@ -16,22 +19,10 @@ const experience = [
 ];
 
 const skills = [
-  {
-    category: "Languages",
-    items: ["TypeScript", "JavaScript", "HTML/CSS", "Python", "Go", "Rust"],
-  },
-  {
-    category: "Frameworks",
-    items: ["Next.js", "React", "Astro", "Discord.js"],
-  },
-  {
-    category: "Infra & Cloud",
-    items: ["Docker", "GitHub Actions", "Hetzner", "Verda", "Netlify", "DollarDeploy"],
-  },
-  {
-    category: "Databases",
-    items: ["PostgreSQL", "MongoDB"],
-  },
+  { category: "Languages", items: ["TypeScript", "Rust", "Swift", "Go", "Python", "HTML/CSS"] },
+  { category: "Frameworks", items: ["Next.js", "React", "Astro", "Bun", "Discord.js"] },
+  { category: "Infra", items: ["Docker", "Redis", "GitHub Actions", "Hetzner", "Pterodactyl"] },
+  { category: "Databases", items: ["PostgreSQL", "MongoDB"] },
 ];
 
 export default function Home() {
@@ -43,90 +34,77 @@ export default function Home() {
   }, []);
 
   return (
-    <section>
-      <h1
-        className="mb-8 text-2xl font-semibold tracking-tighter transition-opacity"
-        style={{ opacity: greeting !== null ? 1 : 0 }}
-      >
-        {greeting ?? "hi"}, i&apos;m zeriax!
-      </h1>
-
-      <article>
-        <p className="my-5 text-zinc-600 dark:text-zinc-400">
-          You&apos;ve found my little corner of the internet. I&apos;m into{" "}
-          <a href="https://gnu.org/philosophy/free-sw.html">free software</a>{" "}
-          and programming. I spent years deep in the Linux rabbit
-          hole&mdash;Arch, ricing, dwm, bspwm, the works&mdash;before settling
-          on macOS. I&apos;ve built Discord bots, CLI tools, and web apps,
-          picking up solid backend and API experience along the way. Programming
-          since 2021.
+    <>
+      <div className="span-hero">
+        <h1
+          className="t-display transition-opacity"
+          style={{ opacity: greeting !== null ? 1 : 0 }}
+        >
+          {greeting ?? "hi"}, i&apos;m zeriax — I design and build small tools
+          for things people use every day.
+        </h1>
+        <p className="mt-[clamp(1.5rem,3vw,2.25rem)]">
+          <ArrowLink href="/portfolio">See the work</ArrowLink>
         </p>
+      </div>
 
-        <p className="text-zinc-600 dark:text-zinc-400">
-          I also LOOOVE self-hosting and tinkering on my homeserver. I have a
-          spare VPS and also a chunky homeserver in use, on which I host all
-          kinds of stuff, from Pterodactyl Minecraft servers to{" "}
-          <a href="https://jellyfin.org/">Jellyfin</a>, respectively.
+      <div className="span-body pt-[clamp(4rem,9vw,7rem)] t-stack">
+        <p className="t-body">
+          Student working across product design and software engineering.
+          Most of what I build is unglamorous and Finnish: lunch menus, grocery
+          prices, library catalogues, apartment listings — scraped, normalised,
+          and served as something you can actually query.
         </p>
+        <p className="t-body">
+          I spent years deep in the Linux rabbit hole — Arch, ricing, bspwm, the
+          works — before settling on macOS. That&apos;s where the taste for small,
+          fast, dependency-free tools comes from. Programming since 2021.
+        </p>
+        <p className="t-body">
+          I also LOOOVE self-hosting. A spare VPS and a chunky homeserver run
+          everything from Pterodactyl Minecraft servers to{" "}
+          <a href="https://jellyfin.org/" className="t-link">Jellyfin</a>, which is
+          how half these projects start — something annoyed me on my own box.
+        </p>
+      </div>
 
-        <h2 className="mb-0!">experience</h2>
-        <div className="section-divider" />
-        <div>
-          {experience.map((job) => (
-            <div
-              key={job.company}
-              className="py-2.5 border-t border-zinc-200 dark:border-zinc-800 first:border-t-0"
-            >
-              <div className="flex justify-between items-baseline gap-4">
-                <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                  {job.company}
-                </span>
-                <span className="text-xs font-mono text-zinc-500 dark:text-zinc-500 shrink-0">
-                  {job.dates}
-                </span>
-              </div>
-              <p className="text-sm text-zinc-500 dark:text-zinc-500">
-                {job.role} · {job.meta}
-              </p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
-                {job.description}
-              </p>
+      <Section label="Selected work">
+        <ProjectList only="featured" />
+      </Section>
+
+      <Section label="Experience">
+        {experience.map((job) => (
+          <article key={job.company} className="entry">
+            <div className="entry-top">
+              <h3>{job.company}</h3>
+              <time>{job.dates}</time>
             </div>
-          ))}
-        </div>
+            <p className="role">
+              {job.role} · {job.meta}
+            </p>
+            <p className="desc">{job.description}</p>
+          </article>
+        ))}
+      </Section>
 
-        <h2 className="mb-0!">skills & technologies</h2>
-        <div className="section-divider" />
-        <div className="space-y-3">
+      <Section label="Stack">
+        <dl>
           {skills.map(({ category, items }) => (
-            <div key={category} className="flex gap-4 text-sm">
-              <span className="w-28 shrink-0 text-zinc-600 dark:text-zinc-500">
-                {category}
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                {items.map((item) => (
-                  <span
-                    key={item}
-                    className="font-mono text-xs px-2 py-0.5 rounded-full
-                      bg-zinc-100 dark:bg-zinc-900
-                      text-zinc-600 dark:text-zinc-400
-                      border border-zinc-200 dark:border-zinc-800"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
+            <div key={category} className="stack-row">
+              <dt>{category}</dt>
+              <dd>{items.join(", ")}</dd>
             </div>
           ))}
-        </div>
-        {isMobile !== null && (
-          <p className="mt-10 text-xs text-zinc-600 dark:text-zinc-500 font-mono">
-            {isMobile
-              ? "if you've scrolled this far, thanks for visiting. say hi sometime."
-              : "if you've scrolled this far — try pressing space."}
-          </p>
-        )}
-      </article>
-    </section>
+        </dl>
+      </Section>
+
+      {isMobile !== null && (
+        <p className="span-body pt-[clamp(3rem,8vw,5rem)] font-mono text-[0.8125rem] text-fg-faint">
+          {isMobile
+            ? "if you've scrolled this far, thanks for visiting. say hi sometime."
+            : "if you've scrolled this far — try pressing space."}
+        </p>
+      )}
+    </>
   );
 }
