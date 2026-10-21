@@ -1,7 +1,16 @@
 /* Element defaults. Everything else is a token or a component. */
 
 @layer base {
-  html { scrollbar-gutter: stable; }
+  /* A thin thumb in the text colour over a transparent track, so the bar
+     takes on whatever is behind it (the sky on top of the homepage). */
+  html {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--fg) 22%, transparent) transparent;
+  }
+  /* Safari still reads only the prefixed version. */
+  ::-webkit-scrollbar { width: 8px; height: 8px; background: transparent; }
+  ::-webkit-scrollbar-thumb { border-radius: var(--radius-full); background: color-mix(in srgb, var(--fg) 22%, transparent); }
 
   body {
     background: var(--surface);
@@ -13,8 +22,8 @@
   }
 
   ::selection {
-    background: var(--fg);
-    color: var(--surface);
+    background: var(--accent);
+    color: #fff;
   }
 
   input[type="checkbox"] {

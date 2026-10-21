@@ -39,7 +39,7 @@ export function A({ href, children, className }: { href: string; children: React
 export function Row({ name, href, note, as: H = "h3" }: { name: string; href: string; note: string; as?: "h2" | "h3" }) {
   return (
     <div className="work-row">
-      <H className="work-row-name"><A href={href}>{name}</A></H>
+      <H className="work-row-name"><A href={href} className="t-link">{name}</A></H>
       <p className="work-row-note">{note}</p>
     </div>
   );

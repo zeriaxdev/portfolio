@@ -19,16 +19,30 @@
   --grey-100: #FFFFFF;
 
   /* ── Semantic. USE THESE. Contrast measured vs the surface. ─────────── */
+  /* design.how's white space and the posters' one cobalt; greys carry
+     only a whisper of cool so the page doesn't read blue. */
   --surface:        #FFFFFF;          /* page background            */
-  --surface-raised: #FAFAFA;          /* frames behind work         */
-  --fg:             #171717;          /* 17.9:1  ALL reading text   */
-  --fg-muted:       #6B6B6B;          /*  5.3:1  notes, meta        */
-  --fg-faint:       #9A9A9A;          /*  2.8:1  decorative only    */
-  --rule:           #EBEBEB;
+  --surface-raised: #F7F7F9;          /* frames behind work         */
+  --fg:             #17181F;          /* 17.6:1  ALL reading text   */
+  --fg-muted:       #5E606C;          /*  6.3:1  notes, meta        */
+  --fg-faint:       #A2A4AE;          /*  2.6:1  decorative only    */
+  --rule:           #E6E7EB;
+  --accent:         #1F34D6;          /*  8.3:1  cobalt: links, focus, selection */
+  /* Terminal windows follow the theme: paper in light, ink in dark. */
+  --console:        #FFFFFF;
+  --console-fg:     var(--fg);
+  --console-rule:   var(--rule);
+  --tone-p: #1A7F37;  /* prompt  */
+  --tone-k: #9A6700;  /* keyword */
+  --tone-f: #0550AE;  /* flag    */
+  --tone-s: #0A3069;  /* string  */
+  --tone-n: #953800;  /* number  */
+  --tone-b: #8250DF;  /* boolean */
+  --tone-d: #6E7781;  /* dim     */          /* terminal windows: navy ink */
   /* Translucent, so chips tint whatever they sit on (white page or sky)
      instead of sitting on it as grey blocks. */
-  --chip:           rgb(0 0 0 / 0.05); /* quiet button / nav fill    */
-  --chip-hover:     rgb(0 0 0 / 0.09);
+  --chip:           rgb(23 24 31 / 0.05); /* quiet button / nav fill */
+  --chip-hover:     rgb(23 24 31 / 0.09);
 
   /* Quiet chrome, like design.how: labels sit on nothing until hovered
      or current, then get a soft chip. */
@@ -37,10 +51,9 @@
   --btn-bg-active: var(--chip);
   --btn-fg-active: var(--fg);
 
-  /* ── No accent in the chrome. Emphasis comes from inverting ground and
-     figure, the way base-ui.com does it. This is kept only for genuinely
-     semantic signals (a failing contrast check on /dev), never decoration. */
+  /* Semantic warnings only (a failing contrast check on /dev). */
   --signal: #E43411;
+  --sky-top: #6FA4EC;   /* homepage sky; also the overscroll colour above it */
 
   /* ── Type scale. Named by the px size it produces. ───────────────────── */
   --text-1: 0.9375rem;  /* 15px — labels, meta, footer      */
@@ -61,6 +74,12 @@
   --space-24: 6rem;     /* 96px  between sections          */
   --space-36: 9rem;     /* 144px between sections, large   */
 
+  /* ── Radius. Small things get small corners. ───────────────────────── */
+  --radius-sm:   6px;    /* chips, focus rings, compare halves */
+  --radius-md:   8px;    /* buttons, consoles, screenshots     */
+  --radius-lg:   12px;   /* frames around work                 */
+  --radius-full: 999px;  /* pills, round controls              */
+
   /* ── Layout ──────────────────────────────────────────────────────────── */
   --gutter:    clamp(1.25rem, 4vw, 3rem);
   --max-width: 1480px;
@@ -70,12 +89,25 @@
 
 /* ── Dark theme: the same semantic names, different values. ───────────── */
 .dark {
-  --surface:        #0B0B0B;
-  --surface-raised: #131313;
-  --fg:             #EDEDED;          /* 16.9:1 */
-  --fg-muted:       #9B9B9B;          /*  7.1:1 */
-  --fg-faint:       #6E6E6E;          /*  3.6:1  decorative only */
-  --rule:           #222222;
-  --chip:           rgb(255 255 255 / 0.08);
-  --chip-hover:     rgb(255 255 255 / 0.14);
+  /* Neutral night: plain near-black and grey, cobalt only as the accent. */
+  --surface:        #0B0B0C;
+  --surface-raised: #141415;
+  --fg:             #EDEDED;          /* 17.3:1 */
+  --fg-muted:       #A1A1A6;          /*  7.6:1 */
+  --fg-faint:       #636368;          /*  3.5:1  decorative only */
+  --rule:           #222224;
+  --accent:         #7D8CFF;          /*  6.6:1 */
+  --console:        #111113;
+  --console-fg:     #E6E6E6;
+  --console-rule:   #232326;
+  --tone-p: #7EE787;
+  --tone-k: #E3B341;
+  --tone-f: #79C0FF;
+  --tone-s: #A5D6FF;
+  --tone-n: #FFA657;
+  --tone-b: #D2A8FF;
+  --tone-d: #8B949E;
+  --chip:           rgb(237 237 237 / 0.08);
+  --chip-hover:     rgb(237 237 237 / 0.14);
+  --sky-top:        #0D1018;
 }

@@ -2,26 +2,39 @@
 
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
-import ArrowLink from "@/components/ui/ArrowLink";
+import { Console, Row } from "@/components/work/parts";
+import { consoles } from "@/lib/work";
 
 const COLOR_TOKENS = [
   ["--surface", "page background"],
-  ["--surface-raised", "popovers, inputs"],
-  ["--fg", "ALL reading text"],
-  ["--fg-muted", "meta only — dates, tags, labels"],
-  ["--fg-faint", "decorative, never body text"],
-  ["--rule", "hairlines"],
-  ["--accent", "hover fill, one moment"],
+  ["--surface-raised", "frames behind work"],
+  ["--fg", "all reading text, solid buttons"],
+  ["--fg-muted", "notes, meta, dates"],
+  ["--fg-faint", "decorative only, never text"],
+  ["--rule", "hairlines between rows"],
+  ["--accent", "links, focus, selection"],
+  ["--console", "terminal windows"],
+  ["--sky-top", "homepage sky and its overscroll"],
+];
+const TEXT = new Set(["--fg", "--fg-muted", "--fg-faint", "--accent"]);
+
+const RADII = [
+  ["--radius-sm", "chips, focus rings"],
+  ["--radius-md", "buttons, consoles, screenshots"],
+  ["--radius-lg", "frames around work"],
+  ["--radius-full", "pills, round controls"],
 ];
 
 const TYPE = [
-  ["t-display", "--text-4", "hero, once per page"],
-  ["t-title", "--text-3", "page title"],
-  ["t-heading", "--text-2", "section / card heading"],
-  ["t-body", "--text-2", "paragraphs"],
-  ["t-small", "--text-1", "labels, secondary"],
-  ["t-mono", "--text-mono", "dates, tags, meta"],
+  ["home-title", "homepage heading, once"],
+  ["section-title", "section heading"],
+  ["page-lede", "one line under a page title"],
+  ["t-body", "paragraphs"],
+  ["t-small", "labels, footer"],
+  ["t-mono", "code, dates"],
 ];
+
+const LAYOUT = ["--gutter", "--max-width", "--measure", "--bar-h", "--space-4", "--space-8", "--space-24"];
 
 /** Live values read off the document, so this page can never drift from CSS. */
 function useToken(name: string) {
@@ -62,51 +75,36 @@ function Contrast({ fg, bg }: { fg: string; bg: string }) {
 
 function Swatch({ name, note, surface }: { name: string; note: string; surface: string }) {
   const value = useToken(name);
-  const isText = name.startsWith("--fg");
   return (
     <div className="dev-swatch">
       <span className="dev-chip" style={{ background: `var(${name})` }} />
       <code className="t-mono dev-name">{name}</code>
       <code className="t-mono">{value || "—"}</code>
-      {isText ? <Contrast fg={value} bg={surface} /> : <span className="t-mono">—</span>}
+      {TEXT.has(name) ? <Contrast fg={value} bg={surface} /> : <span className="t-mono">—</span>}
       <span className="t-small dev-note">{note}</span>
     </div>
   );
 }
 
+function LiveToken({ name }: { name: string }) {
+  return <>{useToken(name) || "—"}</>;
+}
+
 export default function Dev() {
   const surface = useToken("--surface");
-  const [grid, setGrid] = useState(false);
 
   return (
     <div className="span-all dev">
       <header className="dev-head">
         <h1 className="t-title">Design system</h1>
-        <p className="t-body">
-          Every value is read live from the stylesheet — this page cannot drift
-          from the CSS. Press <kbd>d</kbd> to flip the theme and watch the
-          contrast numbers update. Edit{" "}
-          <code className="t-mono">styles/tokens.css</code> to change anything.
-        </p>
-        <p className="dev-actions">
-          <Button className="btn-sm" onClick={() => setGrid((g) => !g)}>
-            {grid ? "Hide" : "Show"} 8-column grid
-          </Button>
+        <p className="t-body dev-note">
+          Values are read live from <code className="t-mono">styles/tokens.css</code>. Press{" "}
+          <kbd>d</kbd> to flip the theme.
         </p>
       </header>
 
-      {grid && (
-        <div className="dev-grid-overlay" aria-hidden>
-          {Array.from({ length: 8 }, (_, i) => <span key={i} />)}
-        </div>
-      )}
-
       <section className="dev-section">
         <h2 className="t-heading">Colour</h2>
-        <p className="t-small dev-note">
-          All reading text is <code className="t-mono">--fg</code>. Hierarchy
-          comes from size and weight, never from dimming.
-        </p>
         <div className="dev-swatches">
           <div className="dev-swatch dev-swatch-head">
             <span />
@@ -122,16 +120,26 @@ export default function Dev() {
       </section>
 
       <section className="dev-section">
-        <h2 className="t-heading">Typography</h2>
-        <p className="t-small dev-note">
-          Four sizes. One class per role — never combine them.
-        </p>
+        <h2 className="t-heading">Radius</h2>
+        <div className="dev-radii">
+          {RADII.map(([n, note]) => (
+            <div key={n} className="dev-radius">
+              <span className="dev-radius-box" style={{ borderRadius: `var(${n})` }} />
+              <code className="t-mono dev-name">{n}</code>
+              <code className="t-mono"><LiveToken name={n} /></code>
+              <span className="t-small dev-note">{note}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="dev-section">
+        <h2 className="t-heading">Type</h2>
         <div className="dev-type">
-          {TYPE.map(([cls, token, use]) => (
+          {TYPE.map(([cls, use]) => (
             <div key={cls} className="dev-type-row">
               <div className="dev-type-meta">
                 <code className="t-mono">.{cls}</code>
-                <code className="t-mono">{token}</code>
                 <span className="t-small dev-note">{use}</span>
               </div>
               <p className={cls}>Grocery prices, lunch menus, Minecraft servers</p>
@@ -141,69 +149,46 @@ export default function Dev() {
       </section>
 
       <section className="dev-section">
-        <h2 className="t-heading">Button</h2>
-        <p className="t-small dev-note">
-          One component. Hover fills with accent; pressed inverts. Try them.
-        </p>
+        <h2 className="t-heading">Buttons</h2>
         <div className="dev-row">
-          <Button href="/dev">default</Button>
-          <Button href="/dev" active>
-            aria-current
-          </Button>
-          <Button href="/dev" variant="primary">
-            primary
-          </Button>
-          <Button className="btn-sm" href="/dev">
-            btn-sm
-          </Button>
+          <a href="/dev" className="quiet-btn">quiet-btn</a>
+          <Button href="/dev">nav</Button>
+          <Button href="/dev" active>nav, current</Button>
         </div>
-        <div className="dev-row">
-          <ArrowLink href="/portfolio">Arrow link</ArrowLink>
-          <a href="/dev" className="t-link">Inline text link</a>
+        <div className="dev-row dev-sky on-sky">
+          <a href="/dev" className="quiet-btn is-solid">is-solid</a>
+          <a href="/dev" className="quiet-btn">on the sky</a>
         </div>
       </section>
 
       <section className="dev-section">
-        <h2 className="t-heading">List row</h2>
-        <p className="t-small dev-note">
-          No cards. Hairline + space. Hover tints the title only.
-        </p>
-        <div className="list">
-          {["zenith", "mcmove"].map((n) => (
-            <a key={n} href="/dev" className="list-row">
-              <span className="list-head">
-                <span className="list-title">{n}</span>
-                <span className="list-meta">2026</span>
-              </span>
-              <span className="list-desc">
-                A description sitting directly on the page, at full contrast.
-              </span>
-              <span className="tags">
-                <span className="tag">Rust</span>
-                <span className="tag">CLI</span>
-              </span>
-            </a>
-          ))}
+        <h2 className="t-heading">Links</h2>
+        <div className="dev-row">
+          <a href="/dev" className="t-link">t-link: hover, tab to it, press it</a>
         </div>
       </section>
 
       <section className="dev-section">
-        <h2 className="t-heading">Spacing &amp; layout</h2>
+        <h2 className="t-heading">Work</h2>
+        <figure className="work-fig dev-work">
+          <div className="frame">
+            <Console console={consoles.menu} />
+          </div>
+          <Row name="menu-api" href="/portfolio/menu-api" note="Finnish school lunches as one JSON shape" />
+        </figure>
+      </section>
+
+      <section className="dev-section">
+        <h2 className="t-heading">Spacing and layout</h2>
         <div className="dev-swatches">
-          {["--gutter", "--max-width", "--measure", "--bar-h"].map((t) => (
+          {LAYOUT.map((t) => (
             <div key={t} className="dev-swatch dev-swatch-plain">
               <code className="t-mono dev-name">{t}</code>
-              <code className="t-mono">
-                <LiveToken name={t} />
-              </code>
+              <code className="t-mono"><LiveToken name={t} /></code>
             </div>
           ))}
         </div>
       </section>
     </div>
   );
-}
-
-function LiveToken({ name }: { name: string }) {
-  return <>{useToken(name) || "—"}</>;
 }

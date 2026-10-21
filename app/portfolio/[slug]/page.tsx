@@ -34,7 +34,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     <div className="span-all">
       <div className="col">
-        <Link href="/portfolio" className="back">← Work</Link>
+        <Link href="/portfolio" className="back">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+            <path d="M12.5 8h-9M7.5 4 3.5 8l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Work
+        </Link>
       </div>
       <header className="page-head">
         <h1 className="page-title">{project.name}</h1>

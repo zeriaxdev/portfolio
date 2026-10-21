@@ -69,30 +69,30 @@
   /* Ground and figure swapped. Use anywhere you'd reach for "invert". */
   .invert { background-color: var(--fg); color: var(--surface); }
 
-  .t-link {
-    text-decoration: underline;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: auto;
+  /* One link style for the whole site: cobalt, no underline at rest, a full
+     underline on hover, an accent ring on keyboard focus, and a cobalt block
+     with the label in the page colour while pressed. Row titles follow it. */
+  :is(.t-link, .prose a, article a:not(.heading-anchor)),
+  .row-link .row-main {
+    color: var(--accent);
+    text-decoration: none;
     text-decoration-thickness: 1px;
-    /* 2px off the baseline. 0.22em (≈4px) read as a bar floating under the
-       text; their footer links sit tight to it. */
-    text-underline-offset: 2px;
-    text-decoration-color: currentColor;
+    text-underline-offset: 3px;
+    text-decoration-skip-ink: auto;
   }
-  /* Underline clears on hover, fills on press. */
-  .t-link:hover { text-decoration-color: transparent; }
-  .t-link:focus-visible { outline: 1px solid var(--fg); outline-offset: 3px; }
-  /* Pressed: fill with the text colour and flip the label to the ground.
-     `background: currentColor` + a new `color` is circular — currentColor
-     resolves to this element's own colour, so both would end up the same.
-     Name the token pair instead; that IS the non-literal invert. */
-  .t-link:active {
-    background-color: var(--fg);
+  :is(.t-link, .prose a, article a:not(.heading-anchor)):hover,
+  .row-link:hover .row-main { text-decoration-line: underline; }
+  :is(.t-link, .prose a, article a:not(.heading-anchor), .row-link):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+  :is(.t-link, .prose a, article a:not(.heading-anchor)):active {
+    background-color: var(--accent);
     color: var(--surface);
-    text-decoration-color: transparent;
+    text-decoration-line: none;
     /* Padding gives the fill some air; the matching negative margin means
-       pressing doesn't reflow the line. Both are needed — the margin alone
-       pulls neighbouring text in. */
+       pressing doesn't reflow the line. */
     padding-inline: 0.15em;
     margin-inline: -0.15em;
     box-decoration-break: clone;

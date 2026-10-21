@@ -120,8 +120,8 @@ export default function Socials() {
       </ul>
       <p className="col work-also">
         If this still doesn&apos;t cut it, you can have my{" "}
-        <Link href="/sshkey.txt" className="soft-link">SSH public keys</Link> and{" "}
-        <Link href="/pgpkey.txt" className="soft-link">PGP public keys</Link>.
+        <Link href="/sshkey.txt" className="t-link">SSH public keys</Link> and{" "}
+        <Link href="/pgpkey.txt" className="t-link">PGP public keys</Link>.
       </p>
     </div>
   );

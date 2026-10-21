@@ -1,4 +1,4 @@
-import { Compare, Motion } from "@/components/work/client";
+import { Compare, Motion, SkyOverscroll } from "@/components/work/client";
 import { A, Console, Row } from "@/components/work/parts";
 import { consoles, ddCase, pricingMotion } from "@/lib/work";
 
@@ -13,17 +13,25 @@ export default function Home() {
   return (
     <div className="span-all">
       {/* A dithered sky behind the top of the page; it fades into the page colour. */}
-      <div className="home-sky" aria-hidden>
+      <div className="home-sky" aria-hidden suppressHydrationWarning>
+        {/* Before first paint: pick one of three cloud tiles and a random start. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(e){e.dataset.v=1+Math.floor(Math.random()*3);e.style.setProperty('--sky-r',Math.random().toFixed(3))})(document.currentScript.parentElement)",
+          }}
+        />
         <div className="home-sky-clouds" />
       </div>
-      <section className="home-hero" aria-labelledby="home-title">
+      <SkyOverscroll />
+      <section className="home-hero on-sky" aria-labelledby="home-title">
         <h1 id="home-title" className="home-title">Hi, I&apos;m zeriax.</h1>
         <p className="home-sub">
           I&apos;m a student and a part-time product designer at DollarDeploy. I also build small
           tools for things people use every day.
         </p>
         <div className="actions">
-          <A href="#work" className="quiet-btn">See the work</A>
+          <A href="#work" className="quiet-btn is-solid">See the work</A>
           <A href="mailto:contact@zeriax.com" className="quiet-btn">Email me</A>
         </div>
       </section>
@@ -63,11 +71,11 @@ export default function Home() {
           Also{" "}
           {more.map((l, i) => (
             <span key={l.href}>
-              <A href={l.href} className="soft-link">{l.label}</A>
+              <A href={l.href} className="t-link">{l.label}</A>
               {i < more.length - 2 ? ", " : i === more.length - 2 ? " and " : ". "}
             </span>
           ))}
-          <A href="/portfolio" className="soft-link">See all work</A>
+          <A href="/portfolio" className="t-link">See all work</A>
         </p>
       </section>
 

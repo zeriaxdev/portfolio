@@ -3,6 +3,29 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
+/** While the hero sky is on screen, the root background (what rubber-band
+ *  overscroll reveals) is sky too. Flips only on enter/leave, not per frame.
+ *  Also picks the cloud tile after client navigation, where the inline
+ *  script in the page doesn't run. */
+export function SkyOverscroll() {
+  useEffect(() => {
+    const sky = document.querySelector<HTMLElement>(".home-sky");
+    if (!sky) return;
+    if (!sky.dataset.v) {
+      sky.dataset.v = String(1 + Math.floor(Math.random() * 3));
+      sky.style.setProperty("--sky-r", Math.random().toFixed(3));
+    }
+    const root = document.documentElement;
+    const io = new IntersectionObserver(([e]) => root.classList.toggle("sky-in", e.isIntersecting));
+    io.observe(sky);
+    return () => {
+      io.disconnect();
+      root.classList.remove("sky-in");
+    };
+  }, []);
+  return null;
+}
+
 /** `src` is a base path; `-light.webp` and `-dark.webp` both exist and CSS
  *  shows the one matching the site theme (the hidden one stays lazy). */
 type Side = { src: string; label: string; alt: string };

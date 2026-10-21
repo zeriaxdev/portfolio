@@ -26,6 +26,9 @@ body::before {
   mask-image: linear-gradient(black 50%, transparent);
   -webkit-mask-image: linear-gradient(black 50%, transparent);
 }
+/* While the sky is at the top it already sits above this fade, and the
+   fade would paint a pale band over the sky-blue overscroll on pull. */
+html.sky-in body::before { display: none; }
 body::after {
   bottom: 0;
   height: 56px;
@@ -60,7 +63,7 @@ body::after {
   .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
   .quiet-btn {
     padding: 0.5rem 1rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background: var(--chip);
     color: var(--fg);
     font-size: 0.9375rem;
@@ -68,11 +71,8 @@ body::after {
     transition: background-color 150ms ease;
   }
   .quiet-btn:hover { background: var(--chip-hover); }
-  .quiet-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  .quiet-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  /* Links inside running text: a faint underline that darkens on hover. */
-  .soft-link { color: inherit; text-decoration: underline; text-decoration-color: var(--fg-faint); text-underline-offset: 3px; }
-  .soft-link:hover { text-decoration-color: currentColor; }
 
   /* ── Home hero ── */
   .home-hero {
@@ -85,8 +85,8 @@ body::after {
     text-align: center;
   }
   /* The hero sky: a layer behind the top of the page whose gradient ends on
-     the page colour, so it has no edges. Dithered cumulus (a baked, seamless
-     tile) drift across it very slowly. Day sky in light mode, night in dark. */
+     the page colour, so it has no edges. Dithered cirrus (one of three baked,
+     seamless tiles, picked with a random start on load) drift across it. Day sky in light mode, night in dark. */
   .home-sky {
     position: absolute;
     top: 0;
@@ -97,25 +97,36 @@ body::after {
     z-index: 41;
     height: min(80svh, 48rem);
     overflow: hidden;
-    background: linear-gradient(180deg, #6FA4EC 0%, #8EBAF1 30%, #C1DAF8 60%, var(--surface) 100%);
+    background: linear-gradient(180deg, var(--sky-top) 0%, #8EBAF1 30%, #C1DAF8 60%, var(--surface) 100%);
   }
-  .dark .home-sky { background: linear-gradient(180deg, #040814 0%, #0A1530 35%, #0C1733 62%, var(--surface) 100%); }
+  .dark .home-sky { background: linear-gradient(180deg, var(--sky-top) 0%, #10131C 40%, #0F1117 70%, var(--surface) 100%); }
   .home-sky-clouds {
     position: absolute;
     left: 0;
     right: 0;
     top: 6%;
     height: 570px;
-    background: url("/work/sky-clouds.png") repeat-x 0 0 / 1920px 570px;
+    background: url("/work/sky-cirrus-1.png") repeat-x 0 0 / 1920px 570px;
     image-rendering: pixelated;
     animation: sky-drift 300s linear infinite;
   }
-  .dark .home-sky-clouds { opacity: 0.3; }
-  @keyframes sky-drift { to { background-position-x: -1920px; } }
-  @media (prefers-reduced-motion: reduce) { .home-sky-clouds { animation: none; } }
+  .home-sky[data-v="2"] .home-sky-clouds { background-image: url("/work/sky-cirrus-2.png"); }
+  .home-sky[data-v="3"] .home-sky-clouds { background-image: url("/work/sky-cirrus-3.png"); }
+  .dark .home-sky-clouds { opacity: 0.24; }
+  /* --sky-r (0..1, set on load) starts the drift at a random point. */
+  @keyframes sky-drift {
+    from { background-position-x: calc(var(--sky-r, 0) * -1920px); }
+    to { background-position-x: calc(var(--sky-r, 0) * -1920px - 1920px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-sky-clouds { animation: none; background-position-x: calc(var(--sky-r, 0) * -1920px); }
+  }
   @media (max-width: 48rem) {
     .home-sky-clouds { top: 4%; height: 380px; background-size: 1280px 380px; }
-    @keyframes sky-drift { to { background-position-x: -1280px; } }
+    @keyframes sky-drift {
+      from { background-position-x: calc(var(--sky-r, 0) * -1280px); }
+      to { background-position-x: calc(var(--sky-r, 0) * -1280px - 1280px); }
+    }
   }
   /* The heading sits on the pale lower sky, still on the first screen. */
   .home-hero { position: relative; z-index: 42; padding-top: clamp(13rem, 36svh, 21rem); }
@@ -130,14 +141,19 @@ body::after {
   }
   @keyframes hero-leave { to { opacity: 0; } }
   /* Frosted buttons on the sky. */
-  .home-hero .quiet-btn {
-    background: rgb(255 255 255 / 0.55);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-  .home-hero .quiet-btn:hover { background: rgb(255 255 255 / 0.8); }
-  .dark .home-hero .quiet-btn { background: var(--chip); }
-  .dark .home-hero .quiet-btn:hover { background: var(--chip-hover); }
+  /* On the sky: opaque fills, no border. The main action is solid ink;
+     the other is cloud white. */
+  .on-sky .quiet-btn { background: #fff; color: var(--fg); }
+  .on-sky .quiet-btn:hover { background: color-mix(in srgb, #fff 82%, var(--sky-top)); }
+  .dark .on-sky .quiet-btn { background: #1C1D22; }
+  .dark .on-sky .quiet-btn:hover { background: #26272D; }
+  .on-sky .quiet-btn.is-solid { background: var(--fg); color: var(--surface); }
+  .on-sky .quiet-btn.is-solid:hover { background: color-mix(in srgb, var(--fg) 85%, var(--surface)); }
+
+  /* Rubber-band overscroll shows the root background. While the sky is on
+     screen it is sky too (SkyOverscroll toggles .sky-in), so pulling down
+     reveals more sky instead of a white band. */
+  html.sky-in { background-color: var(--sky-top); }
   .home-credit { margin: 0 0 clamp(2rem, 4vw, 3rem); font-size: 0.875rem; color: var(--fg-muted); text-wrap: balance; }
   .home-title {
     margin: 0;
@@ -152,40 +168,39 @@ body::after {
   .console {
     display: block;
     overflow: hidden;
-    border-radius: 10px;
-    background: #0E0F12;
-    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.08), 0 22px 40px -16px rgb(0 0 0 / 0.35);
+    border: 1px solid var(--console-rule);
+    border-radius: var(--radius-md);
+    background: var(--console);
+    color: var(--console-fg);
     text-align: left;
   }
-  .dark .console { box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), 0 22px 40px -16px rgb(0 0 0 / 0.7); }
   .console-bar {
     display: block;
     padding: 0.6em 1.1em;
-    border-bottom: 1px solid rgb(255 255 255 / 0.07);
-    font-family: var(--font-geist-sans), sans-serif;
+    border-bottom: 1px solid var(--console-rule);
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
     font-size: 0.6875rem;
-    color: #8B949E;
+    color: var(--tone-d);
   }
   .console-body {
     display: block;
     padding: 0.9em 1.1em 1.1em;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
-    font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
     font-size: 0.75rem;
-    line-height: 1.55;
-    color: #D6D9DF;
+    line-height: 1.6;
   }
   /* Lines that still wrap (phones) hang under their first character. */
   .console-line { display: block; padding-left: 2ch; text-indent: -2ch; }
-  .tone-p { color: #7EE787; }
-  .tone-c { color: #F0F3F6; font-weight: 500; }
-  .tone-k { color: #E3B341; }
-  .tone-f { color: #79C0FF; }
-  .tone-s { color: #A5D6FF; }
-  .tone-n { color: #FFA657; }
-  .tone-b { color: #D2A8FF; }
-  .tone-d { color: #8B949E; }
+  .tone-p { color: var(--tone-p); }
+  .tone-c { color: var(--console-fg); font-weight: 500; }
+  .tone-k { color: var(--tone-k); }
+  .tone-f { color: var(--tone-f); }
+  .tone-s { color: var(--tone-s); }
+  .tone-n { color: var(--tone-n); }
+  .tone-b { color: var(--tone-b); }
+  .tone-d { color: var(--tone-d); }
 
   /* ── Work: a frame, then a name and a few words ── */
   .work { margin-top: clamp(7rem, 14vw, 10rem); scroll-margin-top: 4rem; }
@@ -202,20 +217,19 @@ body::after {
     padding: 7%;
     overflow: hidden;
     border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
     background: var(--surface-raised);
   }
   .frame > .console { width: 100%; }
   .frame-shot {
     width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 28px -12px rgb(0 0 0 / 0.2);
   }
   .frame-wide { display: block; padding: 5%; }
   .work-row { display: flex; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; font-size: 0.9375rem; }
   .work-row-name { margin: 0; font-size: inherit; font-weight: 500; }
-  .work-row-name a { color: inherit; text-decoration: none; }
-  .work-row-name a:hover { text-decoration: underline; text-underline-offset: 3px; }
   .work-row-note { margin: 0; color: var(--fg-muted); text-align: right; }
   .work-also { margin-block: 3.5rem 0; font-size: 0.875rem; color: var(--fg-muted); text-align: center; }
   @media (max-width: 48rem) {
@@ -238,8 +252,6 @@ body::after {
     font-size: 0.9375rem;
     text-decoration: none;
   }
-  .row-link:hover .row-main { text-decoration: underline; text-underline-offset: 3px; }
-  .row-link:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; border-radius: 4px; }
   .row-main { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 500; }
   .row-side { color: var(--fg-muted); text-align: right; }
   @media (max-width: 30rem) {
@@ -261,15 +273,26 @@ body::after {
   }
   .project-list li::before { content: ""; position: absolute; left: 0.1rem; top: 1.15rem; width: 5px; height: 1px; background: var(--fg-faint); }
   .project-foot { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 2.5rem; }
-  .back { display: inline-block; margin-bottom: 1.5rem; font-size: 0.875rem; color: var(--fg-muted); text-decoration: none; }
+  /* Navigation, not an inline link: quiet grey with an icon arrow. */
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color 150ms ease;
+  }
   .back:hover { color: var(--fg); }
+  .back:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-sm); }
 
   /* ── Before/after slider ── */
   .compare {
     position: relative;
     width: 100%;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 28px -12px rgb(0 0 0 / 0.2);
   }
   .compare-side img { display: block; width: 100%; height: auto; }
@@ -278,10 +301,10 @@ body::after {
     position: absolute;
     top: 10px;
     padding: 3px 7px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     background: rgb(255 255 255 / 0.88);
     color: #111;
-    font-family: var(--font-ibm-plex-mono), ui-monospace, monospace;
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
     font-size: 11px;
     line-height: 1.3;
     pointer-events: none;
@@ -307,7 +330,7 @@ body::after {
     width: 30px;
     height: 30px;
     translate: -50% -50%;
-    border-radius: 999px;
+    border-radius: var(--radius-full);
     background:
       linear-gradient(#999, #999) calc(50% - 3px) 50% / 1.5px 10px no-repeat,
       linear-gradient(#999, #999) calc(50% + 3px) 50% / 1.5px 10px no-repeat,
@@ -315,11 +338,11 @@ body::after {
     box-shadow: 0 2px 8px rgb(0 0 0 / 0.25);
   }
   .compare-range { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
-  .compare:has(.compare-range:focus-visible) .compare-line::after { outline: 2px solid var(--fg); outline-offset: 2px; }
+  .compare:has(.compare-range:focus-visible) .compare-line::after { outline: 2px solid var(--accent); outline-offset: 2px; }
   @media (max-width: 48rem) {
     /* Dragging a phone-width page screenshot is fiddly: stack them instead. */
     .compare { display: flex; flex-direction: column-reverse; gap: 0.75rem; overflow: visible; border-radius: 0; box-shadow: none; }
-    .compare-side { position: relative; flex-shrink: 0; overflow: hidden; border-radius: 6px; box-shadow: 0 0 0 1px var(--rule); }
+    .compare-side { position: relative; flex-shrink: 0; overflow: hidden; border-radius: var(--radius-sm); box-shadow: 0 0 0 1px var(--rule); }
     .compare-before { position: relative; inset: auto; clip-path: none; }
     .compare-after .compare-tag { right: auto; left: 10px; }
     .compare-line, .compare-range { display: none; }
@@ -330,7 +353,7 @@ body::after {
     position: relative;
     display: block;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 28px -12px rgb(0 0 0 / 0.2);
   }
   .motion-video { display: block; width: 100%; height: auto; }
@@ -343,7 +366,7 @@ body::after {
     width: 28px;
     height: 28px;
     border: 0;
-    border-radius: 999px;
+    border-radius: var(--radius-full);
     background: rgb(0 0 0 / 0.5);
     color: #fff;
     cursor: pointer;
@@ -351,7 +374,7 @@ body::after {
     transition: opacity 150ms ease;
   }
   .motion-btn:hover, .motion-btn:focus-visible { opacity: 1; }
-  .motion-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  .motion-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   @media (prefers-reduced-motion: reduce) {
     .quiet-btn, .motion-btn { transition: none; }
