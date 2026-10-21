@@ -5,14 +5,14 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 /** While the hero sky is on screen, the root background (what rubber-band
  *  overscroll reveals) is sky too. Flips only on enter/leave, not per frame.
- *  Also picks the cloud tile after client navigation, where the inline
- *  script in the page doesn't run. */
+ *  Also sets the random start (and a sky, if the weather is unknown) after
+ *  client navigation, where the inline script in the page doesn't run. */
 export function SkyOverscroll() {
   useEffect(() => {
     const sky = document.querySelector<HTMLElement>(".home-sky");
     if (!sky) return;
-    if (!sky.dataset.v) {
-      sky.dataset.v = String(1 + Math.floor(Math.random() * 3));
+    if (!sky.style.getPropertyValue("--sky-r")) {
+      if (!sky.dataset.kind) sky.dataset.kind = ["few", "scattered", "broken"][Math.floor(Math.random() * 3)];
       sky.style.setProperty("--sky-r", Math.random().toFixed(3));
     }
     const root = document.documentElement;
