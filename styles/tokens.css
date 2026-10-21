@@ -30,7 +30,7 @@
   /* Quiet chrome, like design.how: labels sit on nothing until hovered
      or current, then get a soft chip. */
   --btn-bg:        transparent;
-  --btn-fg:        var(--fg-muted);
+  --btn-fg:        color-mix(in srgb, var(--fg) 80%, var(--surface));
   --btn-bg-active: var(--chip);
   --btn-fg-active: var(--fg);
 
