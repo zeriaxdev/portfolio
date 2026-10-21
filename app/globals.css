@@ -5,7 +5,6 @@
      styles/typography.css   .t-display / .t-body / ...
      styles/components.css   .btn / .list-row / .section / ...
      styles/base.css         element defaults
-     styles/motion.css       page transition
      styles/prose.css        MDX + syntax highlighting
      styles/site.css         page compositions: home, work, rows
    ═══════════════════════════════════════════════════════════════════════ */
@@ -16,7 +15,6 @@
 @import "../styles/base.css";
 @import "../styles/typography.css";
 @import "../styles/components.css";
-@import "../styles/motion.css";
 @import "../styles/prose.css";
 @import "../styles/site.css";
 

@@ -84,20 +84,27 @@ body::after {
     overflow: clip;
     text-align: center;
   }
-  .home-cloud {
+  /* The hero sky: no card, a band that fades into the page on every side.
+     The dither shader's white clouds are screened over a sky gradient, so
+     its black ground drops out. Day sky in light mode, night sky in dark. */
+  .home-sky {
     position: relative;
-    flex-shrink: 0;
-    width: min(100%, 62rem);
-    aspect-ratio: 1000 / 370;
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
-    container-type: inline-size;
+    width: 100%;
+    height: clamp(13rem, 38svh, 24rem);
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    background: linear-gradient(180deg, #3D7AD8 0%, #74AAEC 45%, #B9D8F7 80%, #E6F1FD 100%);
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 70%, transparent), linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    mask-composite: intersect;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 70%, transparent), linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-composite: source-in;
   }
-  /* Readable depth: overlap and a little rotation, never blur. */
-  .home-cloud > .console { position: absolute; }
-  .home-c1 { left: 0; top: 40%; width: 46%; rotate: -2deg; z-index: 1; }
-  .home-c2 { left: 31%; top: 0; width: 38%; rotate: 1.5deg; z-index: 2; }
-  .home-c3 { left: 66%; top: 30%; width: 32%; rotate: 3deg; z-index: 3; }
-  .home-credit { margin: calc(-1 * clamp(1.5rem, 3vw, 2.5rem)) 0 clamp(2rem, 4vw, 3rem); font-size: 0.875rem; color: var(--fg-muted); text-wrap: balance; }
+  .dark .home-sky { background: linear-gradient(180deg, #050914 0%, #0B1630 45%, #13254D 80%, #1B3060 100%); }
+  /* Contrast keeps only the brightest parts of the shader's field: sparse
+     white puffs on clear sky instead of an even haze. */
+  .home-sky-clouds { position: absolute; inset: 0; mix-blend-mode: screen; filter: contrast(2.4) brightness(0.8); }
+  .dark .home-sky-clouds { filter: contrast(2.4) brightness(0.34); }
+  .home-sky-clouds canvas { display: block; }
+  .home-credit { margin: 0 0 clamp(2rem, 4vw, 3rem); font-size: 0.875rem; color: var(--fg-muted); text-wrap: balance; }
   .home-title {
     margin: 0;
     font-size: clamp(1.75rem, 3vw, 2.25rem);
@@ -106,15 +113,6 @@ body::after {
     letter-spacing: -0.035em;
   }
   .home-sub { max-width: 33rem; margin: 1rem 0 0; font-size: 1rem; line-height: 1.5; text-wrap: balance; }
-  .home-hint { margin: clamp(5rem, 10vw, 7rem) auto 0; font-size: 0.8125rem; color: var(--fg-faint); text-align: center; }
-  .home-hint-touch { display: none; }
-  @media (hover: none) {
-    .home-hint-key { display: none; }
-    .home-hint-touch { display: inline; }
-  }
-  @media (max-width: 48rem) {
-    .home-cloud { width: 150%; }
-  }
 
   /* ── Console: a terminal window of real output ── */
   .console {
@@ -144,9 +142,6 @@ body::after {
     line-height: 1.55;
     color: #D6D9DF;
   }
-  /* In the hero the consoles scale with the cloud and never wrap. */
-  .home-cloud .console-bar { padding: 0.9cqi 1.4cqi; font-size: clamp(7px, 1.05cqi, 11px); }
-  .home-cloud .console-body { padding: 1.2cqi 1.4cqi 1.4cqi; white-space: pre; font-size: clamp(5px, 1.02cqi, 11px); }
   /* Lines that still wrap (phones) hang under their first character. */
   .console-line { display: block; padding-left: 2ch; text-indent: -2ch; }
   .tone-p { color: #7EE787; }

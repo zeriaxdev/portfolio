@@ -1,3 +1,4 @@
+import HeroSky from "@/components/work/HeroSky";
 import { Compare, Motion } from "@/components/work/client";
 import { A, Console, Row } from "@/components/work/parts";
 import { consoles, ddCase, pricingMotion } from "@/lib/work";
@@ -13,16 +14,11 @@ export default function Home() {
   return (
     <div className="span-all">
       <section className="home-hero" aria-labelledby="home-title">
-        <div className="home-cloud" aria-hidden>
-          <Console console={consoles.mcmove} className="home-c1" />
-          <Console console={consoles.solidtime} className="home-c2" />
-          <Console console={consoles.kruoka} className="home-c3" />
-        </div>
-        <p className="home-credit">Real output from three of my tools</p>
+        <HeroSky />
         <h1 id="home-title" className="home-title">Hi, I&apos;m zeriax.</h1>
         <p className="home-sub">
-          I&apos;m a student who designs and builds small tools for things people use every day,
-          and a part-time product designer at DollarDeploy.
+          I&apos;m a student and a part-time product designer at DollarDeploy. I also build small
+          tools for things people use every day.
         </p>
         <div className="actions">
           <A href="#work" className="quiet-btn">See the work</A>
@@ -73,10 +69,6 @@ export default function Home() {
         </p>
       </section>
 
-      <p className="home-hint">
-        <span className="home-hint-key">If you&apos;ve scrolled this far, try pressing space.</span>
-        <span className="home-hint-touch">If you&apos;ve scrolled this far, thanks for visiting. Say hi sometime.</span>
-      </p>
     </div>
   );
 }
