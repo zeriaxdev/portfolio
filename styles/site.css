@@ -67,7 +67,7 @@ body::after {
     text-decoration: none;
     transition: background-color 150ms ease;
   }
-  .quiet-btn:hover { background: var(--rule); }
+  .quiet-btn:hover { background: var(--chip-hover); }
   .quiet-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
 
   /* Links inside running text: a faint underline that darkens on hover. */
@@ -84,26 +84,60 @@ body::after {
     overflow: clip;
     text-align: center;
   }
-  /* The hero sky: no card, a band that fades into the page on every side.
-     The dither shader's white clouds are screened over a sky gradient, so
-     its black ground drops out. Day sky in light mode, night sky in dark. */
+  /* The hero sky: a layer behind the top of the page whose gradient ends on
+     the page colour, so it has no edges. Dithered cumulus (a baked, seamless
+     tile) drift across it very slowly. Day sky in light mode, night in dark. */
   .home-sky {
-    position: relative;
-    width: 100%;
-    height: clamp(13rem, 38svh, 24rem);
-    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
-    background: linear-gradient(180deg, #3D7AD8 0%, #74AAEC 45%, #B9D8F7 80%, #E6F1FD 100%);
-    mask-image: linear-gradient(to bottom, transparent, black 10%, black 70%, transparent), linear-gradient(to right, transparent, black 12%, black 88%, transparent);
-    mask-composite: intersect;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 70%, transparent), linear-gradient(to right, transparent, black 12%, black 88%, transparent);
-    -webkit-mask-composite: source-in;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* Above the edge blur (z 40) so scrolling never blurs the sky; the hero
+       text sits above it and the nav above everything. */
+    z-index: 41;
+    height: min(80svh, 48rem);
+    overflow: hidden;
+    background: linear-gradient(180deg, #6FA4EC 0%, #8EBAF1 30%, #C1DAF8 60%, var(--surface) 100%);
   }
-  .dark .home-sky { background: linear-gradient(180deg, #050914 0%, #0B1630 45%, #13254D 80%, #1B3060 100%); }
-  /* Contrast keeps only the brightest parts of the shader's field: sparse
-     white puffs on clear sky instead of an even haze. */
-  .home-sky-clouds { position: absolute; inset: 0; mix-blend-mode: screen; filter: contrast(2.4) brightness(0.8); }
-  .dark .home-sky-clouds { filter: contrast(2.4) brightness(0.34); }
-  .home-sky-clouds canvas { display: block; }
+  .dark .home-sky { background: linear-gradient(180deg, #040814 0%, #0A1530 35%, #0C1733 62%, var(--surface) 100%); }
+  .home-sky-clouds {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 6%;
+    height: 570px;
+    background: url("/work/sky-clouds.png") repeat-x 0 0 / 1920px 570px;
+    image-rendering: pixelated;
+    animation: sky-drift 300s linear infinite;
+  }
+  .dark .home-sky-clouds { opacity: 0.3; }
+  @keyframes sky-drift { to { background-position-x: -1920px; } }
+  @media (prefers-reduced-motion: reduce) { .home-sky-clouds { animation: none; } }
+  @media (max-width: 48rem) {
+    .home-sky-clouds { top: 4%; height: 380px; background-size: 1280px 380px; }
+    @keyframes sky-drift { to { background-position-x: -1280px; } }
+  }
+  /* The heading sits on the pale lower sky, still on the first screen. */
+  .home-hero { position: relative; z-index: 42; padding-top: clamp(13rem, 36svh, 21rem); }
+  /* The hero sits above the edge blur (so the sky never blurs), so instead
+     each line fades out as it scrolls up toward the nav. */
+  @supports (animation-timeline: view()) {
+    .home-hero > * {
+      animation: hero-leave linear both;
+      animation-timeline: view();
+      animation-range: exit -160px exit -40px;
+    }
+  }
+  @keyframes hero-leave { to { opacity: 0; } }
+  /* Frosted buttons on the sky. */
+  .home-hero .quiet-btn {
+    background: rgb(255 255 255 / 0.55);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .home-hero .quiet-btn:hover { background: rgb(255 255 255 / 0.8); }
+  .dark .home-hero .quiet-btn { background: var(--chip); }
+  .dark .home-hero .quiet-btn:hover { background: var(--chip-hover); }
   .home-credit { margin: 0 0 clamp(2rem, 4vw, 3rem); font-size: 0.875rem; color: var(--fg-muted); text-wrap: balance; }
   .home-title {
     margin: 0;

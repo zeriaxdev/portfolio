@@ -25,7 +25,10 @@
   --fg-muted:       #6B6B6B;          /*  5.3:1  notes, meta        */
   --fg-faint:       #9A9A9A;          /*  2.8:1  decorative only    */
   --rule:           #EBEBEB;
-  --chip:           #F2F2F2;          /* quiet button / nav fill    */
+  /* Translucent, so chips tint whatever they sit on (white page or sky)
+     instead of sitting on it as grey blocks. */
+  --chip:           rgb(0 0 0 / 0.05); /* quiet button / nav fill    */
+  --chip-hover:     rgb(0 0 0 / 0.09);
 
   /* Quiet chrome, like design.how: labels sit on nothing until hovered
      or current, then get a soft chip. */
@@ -73,5 +76,6 @@
   --fg-muted:       #9B9B9B;          /*  7.1:1 */
   --fg-faint:       #6E6E6E;          /*  3.6:1  decorative only */
   --rule:           #222222;
-  --chip:           #1C1C1C;
+  --chip:           rgb(255 255 255 / 0.08);
+  --chip-hover:     rgb(255 255 255 / 0.14);
 }

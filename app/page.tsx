@@ -1,4 +1,3 @@
-import HeroSky from "@/components/work/HeroSky";
 import { Compare, Motion } from "@/components/work/client";
 import { A, Console, Row } from "@/components/work/parts";
 import { consoles, ddCase, pricingMotion } from "@/lib/work";
@@ -13,8 +12,11 @@ const more = [
 export default function Home() {
   return (
     <div className="span-all">
+      {/* A dithered sky behind the top of the page; it fades into the page colour. */}
+      <div className="home-sky" aria-hidden>
+        <div className="home-sky-clouds" />
+      </div>
       <section className="home-hero" aria-labelledby="home-title">
-        <HeroSky />
         <h1 id="home-title" className="home-title">Hi, I&apos;m zeriax.</h1>
         <p className="home-sub">
           I&apos;m a student and a part-time product designer at DollarDeploy. I also build small
