@@ -7,7 +7,7 @@
   }
 
   article {
-    font-size: var(--text-2);
+    font-size: var(--text-base);
     line-height: 1.55;
     color: var(--fg);
   }
@@ -19,10 +19,10 @@
     letter-spacing: -0.01em;
     color: var(--fg);
   }
-  article h1 { font-size: var(--text-3); line-height: 1.15; letter-spacing: -0.015em; }
-  article h2 { font-size: 1.375rem; letter-spacing: -0.02em; }  /* = .section-title */
-  article h3 { font-size: var(--text-2); }
-  article h4 { font-size: var(--text-1); }
+  article h1 { font-size: var(--text-xl); line-height: 1.15; letter-spacing: -0.015em; }
+  article h2 { font-size: var(--text-lg); letter-spacing: -0.02em; }  /* = .section-title */
+  article h3 { font-size: var(--text-base); }
+  article h4 { font-size: var(--text-sm); }
   article h2, article h3, article h4 {
     @apply relative scroll-mt-20;
   }
@@ -200,7 +200,7 @@
   article figcaption {
     margin-top: 0.625rem;
     text-align: center;
-    font-size: var(--text-1);
+    font-size: var(--text-sm);
     color: var(--fg-muted);
   }
   article figcaption strong {

@@ -51,13 +51,13 @@ body::after {
   .page-head { max-width: 34rem; margin: 0 auto clamp(2.5rem, 6vw, 4rem); text-align: center; }
   .page-title {
     margin: 0;
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-size: var(--text-xl);
     font-weight: 500;
     line-height: 1.1;
     letter-spacing: -0.035em;
   }
-  .page-lede { margin: 0.75rem 0 0; font-size: 1rem; line-height: 1.5; color: var(--fg-muted); text-wrap: balance; }
-  .section-title { margin: 0 0 1.5rem; font-size: 1.375rem; font-weight: 500; letter-spacing: -0.025em; text-align: center; }
+  .page-lede { margin: 0.75rem 0 0; font-size: var(--text-base); line-height: 1.5; color: var(--fg-muted); text-wrap: balance; }
+  .section-title { margin: 0 0 1.5rem; font-size: var(--text-lg); font-weight: 500; letter-spacing: -0.025em; text-align: center; }
 
   /* ── Quiet buttons ── */
   .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 1.5rem; }
@@ -66,11 +66,15 @@ body::after {
     border-radius: var(--radius-md);
     background: var(--chip);
     color: var(--fg);
-    font-size: 0.9375rem;
+    font-size: var(--text-sm);
     text-decoration: none;
-    transition: background-color 150ms ease;
+    transition-property: background-color, transform;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
   }
   .quiet-btn:hover { background: var(--chip-hover); }
+  /* A small press, so the button answers the click. */
+  .quiet-btn:active { transform: scale(0.97); }
   .quiet-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 
@@ -95,11 +99,10 @@ body::after {
     /* Above the edge blur (z 40) so scrolling never blurs the sky; the hero
        text sits above it and the nav above everything. */
     z-index: 41;
-    height: min(80svh, 48rem);
+    height: var(--sky-h);
     overflow: hidden;
-    background: linear-gradient(180deg, var(--sky-top) 0%, #8EBAF1 30%, #C1DAF8 60%, var(--surface) 100%);
+    background: var(--sky);
   }
-  .dark .home-sky { background: linear-gradient(180deg, var(--sky-top) 0%, #10131C 40%, #0F1117 70%, var(--surface) 100%); }
   .home-sky-clouds {
     position: absolute;
     left: 0;
@@ -154,23 +157,23 @@ body::after {
      screen it is sky too (SkyOverscroll toggles .sky-in), so pulling down
      reveals more sky instead of a white band. */
   html.sky-in { background-color: var(--sky-top); }
-  .home-credit { margin: 0 0 clamp(2rem, 4vw, 3rem); font-size: 0.875rem; color: var(--fg-muted); text-wrap: balance; }
+  .home-credit { margin: 0 0 clamp(2rem, 4vw, 3rem); font-size: var(--text-sm); color: var(--fg-muted); text-wrap: balance; }
   .home-title {
     margin: 0;
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-size: var(--text-xl);
     font-weight: 500;
     line-height: 1.1;
     letter-spacing: -0.035em;
   }
-  .home-sub { max-width: 33rem; margin: 1rem 0 0; font-size: 1rem; line-height: 1.5; text-wrap: balance; }
+  .home-sub { max-width: 33rem; margin: 1rem 0 0; font-size: var(--text-base); line-height: 1.5; text-wrap: balance; }
 
   /* ── Console: a terminal window of real output ── */
   .console {
     display: block;
     overflow: hidden;
-    border: 1px solid var(--console-rule);
     border-radius: var(--radius-md);
     background: var(--console);
+    box-shadow: var(--object-ring);
     color: var(--console-fg);
     text-align: left;
   }
@@ -179,7 +182,7 @@ body::after {
     padding: 0.6em 1.1em;
     border-bottom: 1px solid var(--console-rule);
     font-family: var(--font-geist-mono), ui-monospace, monospace;
-    font-size: 0.6875rem;
+    font-size: var(--text-xs);
     color: var(--tone-d);
   }
   .console-body {
@@ -188,7 +191,7 @@ body::after {
     overflow-wrap: anywhere;
     white-space: pre-wrap;
     font-family: var(--font-geist-mono), ui-monospace, monospace;
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     line-height: 1.6;
   }
   /* Lines that still wrap (phones) hang under their first character. */
@@ -206,7 +209,7 @@ body::after {
   .work { margin-top: clamp(7rem, 14vw, 10rem); scroll-margin-top: 4rem; }
   .work-head { max-width: 34rem; margin: 0 auto 2.5rem; text-align: center; }
   .work-head .section-title { margin-bottom: 0.25rem; }
-  .work-meta { margin: 0; font-size: 0.875rem; line-height: 1.5; color: var(--fg-muted); text-wrap: balance; }
+  .work-meta { margin: 0; font-size: var(--text-sm); line-height: 1.5; color: var(--fg-muted); text-wrap: balance; }
   .work-fig { margin: 0; }
   .work-fig + .work-fig { margin-top: 3.5rem; }
   .frame {
@@ -225,16 +228,16 @@ body::after {
     width: 100%;
     height: auto;
     border-radius: var(--radius-md);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 28px -12px rgb(0 0 0 / 0.2);
+    box-shadow: var(--object-ring);
   }
   .frame-wide { display: block; padding: 5%; }
-  .work-row { display: flex; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; font-size: 0.9375rem; }
+  .work-row { display: flex; justify-content: space-between; gap: 1rem; margin-top: 0.75rem; font-size: var(--text-sm); }
   .work-row-name { margin: 0; font-size: inherit; font-weight: 500; }
-  .work-row-note { margin: 0; color: var(--fg-muted); text-align: right; }
-  .work-also { margin-block: 3.5rem 0; font-size: 0.875rem; color: var(--fg-muted); text-align: center; }
+  .work-row-note { margin: 0; color: var(--fg-muted); text-align: right; text-wrap: pretty; }
+  .work-also { margin-block: 3.5rem 0; font-size: var(--text-sm); color: var(--fg-muted); text-align: center; }
   @media (max-width: 48rem) {
     .frame { padding: 4%; min-height: 0; }
-    .frame .console-body { font-size: 0.65rem; }
+    .frame .console-body { font-size: var(--text-xs); }
     .work-row { flex-direction: column; gap: 0.1rem; }
     .work-row-note { text-align: left; }
   }
@@ -249,11 +252,11 @@ body::after {
     gap: 1rem;
     padding: 0.9rem 0.25rem;
     color: inherit;
-    font-size: 0.9375rem;
+    font-size: var(--text-sm);
     text-decoration: none;
   }
   .row-main { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 500; }
-  .row-side { color: var(--fg-muted); text-align: right; }
+  .row-side { color: var(--fg-muted); text-align: right; font-variant-numeric: tabular-nums; }
   @media (max-width: 30rem) {
     .row-link { flex-direction: column; gap: 0.15rem; }
     .row-side { text-align: left; }
@@ -261,25 +264,23 @@ body::after {
 
   /* ── Project page ── */
   .project-media { margin-bottom: 2.5rem; }
-  .project-text { font-size: 1rem; line-height: 1.6; }
-  .project-text p { margin: 0 0 1rem; }
+  .project-text { font-size: var(--text-base); line-height: 1.6; }
+  .project-text p { margin: 0 0 1rem; text-wrap: pretty; }
   .project-list { margin: 1.5rem 0 0; padding: 0; list-style: none; }
   .project-list li {
     position: relative;
     padding: 0.55rem 0 0.55rem 1.1rem;
     border-top: 1px solid var(--rule);
-    font-size: 0.9375rem;
+    font-size: var(--text-sm);
     line-height: 1.5;
   }
   .project-list li::before { content: ""; position: absolute; left: 0.1rem; top: 1.15rem; width: 5px; height: 1px; background: var(--fg-faint); }
   .project-foot { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-top: 2.5rem; }
-  /* Navigation, not an inline link: quiet grey with an icon arrow. */
+  /* Navigation, not an inline link: quiet grey. The arrow is Inter's own ←. */
   .back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
+    display: inline-block;
     margin-bottom: 1.5rem;
-    font-size: 0.875rem;
+    font-size: var(--text-sm);
     color: var(--fg-muted);
     text-decoration: none;
     transition: color 150ms ease;
@@ -293,7 +294,7 @@ body::after {
     width: 100%;
     overflow: hidden;
     border-radius: var(--radius-md);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 28px -12px rgb(0 0 0 / 0.2);
+    box-shadow: var(--object-ring);
   }
   .compare-side img { display: block; width: 100%; height: auto; }
   .compare-before { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
@@ -305,7 +306,7 @@ body::after {
     background: rgb(255 255 255 / 0.88);
     color: #111;
     font-family: var(--font-geist-mono), ui-monospace, monospace;
-    font-size: 11px;
+    font-size: var(--text-xs);
     line-height: 1.3;
     pointer-events: none;
   }
@@ -354,7 +355,7 @@ body::after {
     display: block;
     overflow: hidden;
     border-radius: var(--radius-md);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 12px 28px -12px rgb(0 0 0 / 0.2);
+    box-shadow: var(--object-ring);
   }
   .motion-video { display: block; width: 100%; height: auto; }
   .motion-btn {

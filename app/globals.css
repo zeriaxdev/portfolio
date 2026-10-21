@@ -22,7 +22,7 @@
 
 /* Expose tokens to Tailwind so `text-fg-muted`, `bg-surface` etc. work. */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: "Inter Arrows", var(--font-inter);
   --font-mono: var(--font-geist-mono);
 
   --color-surface: var(--surface);

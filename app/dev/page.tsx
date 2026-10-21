@@ -26,12 +26,11 @@ const RADII = [
 ];
 
 const TYPE = [
-  ["home-title", "homepage heading, once"],
-  ["section-title", "section heading"],
-  ["page-lede", "one line under a page title"],
-  ["t-body", "paragraphs"],
-  ["t-small", "labels, footer"],
-  ["t-mono", "code, dates"],
+  ["--text-xl", "page and hero titles"],
+  ["--text-lg", "section titles, h2"],
+  ["--text-base", "body, ledes"],
+  ["--text-sm", "meta, notes, buttons, nav"],
+  ["--text-xs", "code, console, captions"],
 ];
 
 const LAYOUT = ["--gutter", "--max-width", "--measure", "--bar-h", "--space-4", "--space-8", "--space-24"];
@@ -51,7 +50,8 @@ function useToken(name: string) {
 }
 
 function lum(hex: string) {
-  const h = hex.replace("#", "");
+  let h = hex.replace("#", "");
+  if (h.length === 3) h = [...h].map((c) => c + c).join("");
   if (h.length !== 6) return null;
   const c = [0, 2, 4].map((i) => {
     const n = parseInt(h.slice(i, i + 2), 16) / 255;
@@ -136,13 +136,15 @@ export default function Dev() {
       <section className="dev-section">
         <h2 className="t-heading">Type</h2>
         <div className="dev-type">
-          {TYPE.map(([cls, use]) => (
-            <div key={cls} className="dev-type-row">
+          {TYPE.map(([t, use]) => (
+            <div key={t} className="dev-type-row">
               <div className="dev-type-meta">
-                <code className="t-mono">.{cls}</code>
+                <code className="t-mono">{t} <LiveToken name={t} /></code>
                 <span className="t-small dev-note">{use}</span>
               </div>
-              <p className={cls}>Grocery prices, lunch menus, Minecraft servers</p>
+              <p style={{ margin: 0, fontSize: `var(${t})`, lineHeight: 1.3, letterSpacing: t === "--text-xl" ? "-0.025em" : undefined }}>
+                Grocery prices, lunch menus, Minecraft servers
+              </p>
             </div>
           ))}
         </div>
