@@ -49,28 +49,26 @@ export default function CommandPalette() {
     return actions.filter((a) => a.label.toLowerCase().includes(q));
   }, [actions, query]);
 
+  // Opening starts fresh; done here rather than in an effect on `open`.
+  const show = (next: boolean) => {
+    if (next) {
+      setQuery("");
+      setActive(0);
+    }
+    setOpen(next);
+  };
+
   // Open on ⌘K / ctrl+K. Base UI's Dialog owns focus and Escape from there.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((v) => !v);
+        show(!open);
       }
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, []);
-
-  useEffect(() => {
-    if (open) {
-      setQuery("");
-      setActive(0);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    setActive(0);
-  }, [query]);
+  });
 
   const commit = (i: number) => {
     const action = results[i];
@@ -80,7 +78,7 @@ export default function CommandPalette() {
   };
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog.Root open={open} onOpenChange={show}>
       <Dialog.Portal>
         <Dialog.Backdrop className="palette-backdrop" />
         <Dialog.Popup
@@ -104,7 +102,10 @@ export default function CommandPalette() {
             className="palette-input"
             placeholder="Type a command…"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setActive(0);
+            }}
             aria-label="Search commands"
           />
           <ul className="palette-list">

@@ -594,7 +594,11 @@
   }
   .dev-name { color: var(--fg); }
   @media (max-width: 52rem) {
-    .dev-swatch { grid-template-columns: 2rem 1fr; row-gap: 0.25rem; }
+    /* Chip on the left; name and value on one line, contrast and use under it. */
+    .dev-swatch { grid-template-columns: 2rem minmax(0, 1fr) auto; column-gap: 0.75rem; row-gap: 0.15rem; }
+    .dev-swatch > :nth-child(4) { grid-column: 2 / -1; }
+    .dev-swatch > :nth-child(5) { grid-column: 2 / -1; }
+    .dev-swatch-plain > :nth-child(2) { grid-column: auto; }
     .dev-swatch-head { display: none; }
   }
 
