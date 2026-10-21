@@ -88,9 +88,10 @@ body::after {
     overflow: clip;
     text-align: center;
   }
-  /* The hero sky: a layer behind the top of the page whose gradient ends on
-     the page colour, so it has no edges. Dithered cirrus (one of three baked,
-     seamless tiles, picked with a random start on load) drift across it. Day sky in light mode, night in dark. */
+  /* The hero sky: Helsinki's sky right now (lib/weather.ts sets data-kind,
+     --drift, --dir and --sway). A gradient that ends on the page colour,
+     with two layers of baked, seamless dither tiles: finer pixels far
+     away drifting slower, bigger ones near. Day in light mode, night in dark. */
   .home-sky {
     position: absolute;
     top: 0;
@@ -103,33 +104,66 @@ body::after {
     overflow: hidden;
     background: var(--sky);
   }
+  .home-sky-far,
   .home-sky-clouds {
     position: absolute;
     left: 0;
     right: 0;
+    background-repeat: repeat-x;
+    image-rendering: pixelated;
+    opacity: calc(var(--o, 1) * var(--dim, 1));
+    animation: sky-drift var(--drift, 300s) linear infinite, sky-sway var(--sway-t) ease-in-out infinite alternate;
+    animation-direction: var(--dir, normal), alternate;
+  }
+  .home-sky-far {
+    --w: 1280px;
+    --o: 0.5;
+    --sway-t: 23s;
+    top: 0;
+    height: 380px;
+    background-image: url("/work/sky-cirrus-1.png");
+    background-size: 1280px 380px;
+    animation-duration: calc(var(--drift, 300s) * 1.6), 23s;
+  }
+  .home-sky-clouds {
+    --w: 1920px;
+    --sway-t: 17s;
     top: 6%;
     height: 570px;
-    background: url("/work/sky-cirrus-1.png") repeat-x 0 0 / 1920px 570px;
-    image-rendering: pixelated;
-    animation: sky-drift 300s linear infinite;
+    background-image: url("/work/sky-cirrus-2.png");
+    background-size: 1920px 570px;
   }
-  .home-sky[data-v="2"] .home-sky-clouds { background-image: url("/work/sky-cirrus-2.png"); }
-  .home-sky[data-v="3"] .home-sky-clouds { background-image: url("/work/sky-cirrus-3.png"); }
-  .dark .home-sky-clouds { opacity: 0.24; }
-  /* --sky-r (0..1, set on load) starts the drift at a random point. */
+  /* What each kind of weather draws. No data-kind yet reads as scattered. */
+  .home-sky[data-kind="clear"] .home-sky-far { display: none; }
+  .home-sky[data-kind="clear"] .home-sky-clouds { --o: 0.35; background-image: url("/work/sky-cirrus-1.png"); }
+  .home-sky[data-kind="few"] .home-sky-clouds { background-image: url("/work/sky-cirrus-1.png"); }
+  .home-sky[data-kind="broken"] .home-sky-far { background-image: url("/work/sky-cirrus-2.png"); }
+  .home-sky[data-kind="broken"] .home-sky-clouds,
+  .home-sky[data-kind="overcast"] .home-sky-clouds,
+  .home-sky[data-kind="fog"] .home-sky-clouds { background-image: url("/work/sky-cirrus-3.png"); }
+  .home-sky[data-kind="overcast"] .home-sky-far,
+  .home-sky[data-kind="fog"] .home-sky-far { background-image: url("/work/sky-cirrus-3.png"); }
+  .home-sky[data-kind="overcast"] .home-sky-clouds { --o: 0.75; }
+  .home-sky[data-kind="fog"] .home-sky-clouds { --o: 0.45; }
+  .dark .home-sky { --dim: 0.24; }
+  /* --sky-r (0..1, set on load) starts the drift at a random point; --w is
+     the layer's tile width. */
   @keyframes sky-drift {
-    from { background-position-x: calc(var(--sky-r, 0) * -1920px); }
-    to { background-position-x: calc(var(--sky-r, 0) * -1920px - 1920px); }
+    from { background-position-x: calc(var(--sky-r, 0) * var(--w) * -1); }
+    to { background-position-x: calc(var(--sky-r, 0) * var(--w) * -1 - var(--w)); }
+  }
+  /* A slow bob, a few px, bigger in gusts. */
+  @keyframes sky-sway {
+    from { transform: translateY(calc(var(--sway, 3px) * -1)); }
+    to { transform: translateY(var(--sway, 3px)); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .home-sky-clouds { animation: none; background-position-x: calc(var(--sky-r, 0) * -1920px); }
+    .home-sky-far,
+    .home-sky-clouds { animation: none; background-position-x: calc(var(--sky-r, 0) * var(--w) * -1); }
   }
   @media (max-width: 48rem) {
-    .home-sky-clouds { top: 4%; height: 380px; background-size: 1280px 380px; }
-    @keyframes sky-drift {
-      from { background-position-x: calc(var(--sky-r, 0) * -1280px); }
-      to { background-position-x: calc(var(--sky-r, 0) * -1280px - 1280px); }
-    }
+    .home-sky-far { --w: 853px; height: 253px; background-size: 853px 253px; }
+    .home-sky-clouds { --w: 1280px; top: 4%; height: 380px; background-size: 1280px 380px; }
   }
   /* The heading sits on the pale lower sky, still on the first screen. */
   .home-hero { position: relative; z-index: 42; padding-top: clamp(13rem, 36svh, 21rem); }
@@ -380,4 +414,29 @@ body::after {
   @media (prefers-reduced-motion: reduce) {
     .quiet-btn, .motion-btn { transition: none; }
   }
+}
+
+/* Outside @layer on purpose: tokens.css is unlayered, and a layered rule
+   can't override it whatever its specificity. */
+/* Weather retints the sky at the root, so the rubber band's colour follows. */
+html:has(.home-sky[data-kind="clear"]) {
+  --sky-top: #5B94E6;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #7EB0EE 30%, #B9D5F7 60%, var(--surface) 100%);
+}
+html:has(.home-sky[data-kind="overcast"]) {
+  --sky-top: #8C9CB2;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #A6B3C5 35%, #CCD4DF 65%, var(--surface) 100%);
+}
+html:has(.home-sky[data-kind="fog"]) {
+  --sky-top: #B7C0CB;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #CBD1D9 40%, #E1E5EA 70%, var(--surface) 100%);
+}
+html.dark:has(.home-sky[data-kind="clear"]) {
+  --sky-top: #0B0F1C;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #0E1322 40%, #0E1018 70%, var(--surface) 100%);
+}
+html.dark:has(.home-sky[data-kind="overcast"]),
+html.dark:has(.home-sky[data-kind="fog"]) {
+  --sky-top: #15161A;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #17181C 40%, #121315 70%, var(--surface) 100%);
 }

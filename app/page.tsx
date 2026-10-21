@@ -1,5 +1,7 @@
 import { Compare, Motion, SkyOverscroll } from "@/components/work/client";
 import { A, Console, Row } from "@/components/work/parts";
+import type { CSSProperties } from "react";
+import { getHelsinkiSky } from "@/lib/weather";
 import { consoles, ddCase, pricingMotion } from "@/lib/work";
 
 const more = [
@@ -9,18 +11,28 @@ const more = [
   { href: "/portfolio/mac-schoolmenu", label: "mac-schoolmenu" },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const sky = await getHelsinkiSky();
   return (
     <div className="span-all">
-      {/* A dithered sky behind the top of the page; it fades into the page colour. */}
-      <div className="home-sky" aria-hidden suppressHydrationWarning>
-        {/* Before first paint: pick one of three cloud tiles and a random start. */}
+      {/* Helsinki's sky right now, dithered, fading into the page colour. */}
+      <div
+        className="home-sky"
+        data-kind={sky?.kind}
+        style={sky ? ({ "--drift": `${sky.drift}s`, "--dir": sky.dir, "--sway": `${sky.sway}px` } as CSSProperties) : undefined}
+        aria-hidden
+        suppressHydrationWarning
+      >
+        {/* Before first paint: a random start, a random sky if the weather is
+            unknown, and ?weather=fog / ?wind=12 (negative drifts right) to
+            preview. The wind formula mirrors driftSeconds in lib/weather.ts. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(e){e.dataset.v=1+Math.floor(Math.random()*3);e.style.setProperty('--sky-r',Math.random().toFixed(3))})(document.currentScript.parentElement)",
+              "(function(e){var q=new URLSearchParams(location.search),k=q.get('weather'),w=q.get('wind');if(k)e.dataset.kind=k;else if(!e.dataset.kind)e.dataset.kind=['few','scattered','broken'][Math.floor(Math.random()*3)];if(w!==null){var a=Math.abs(+w);e.style.setProperty('--drift',Math.round(Math.min(900,Math.max(60,1920/(1.5+a*1.6))))+'s');e.style.setProperty('--dir',+w<0?'reverse':'normal');e.style.setProperty('--sway',Math.round(Math.min(8,Math.max(2,a*0.9)))+'px')}e.style.setProperty('--sky-r',Math.random().toFixed(3))})(document.currentScript.parentElement)",
           }}
         />
+        <div className="home-sky-far" />
         <div className="home-sky-clouds" />
       </div>
       <SkyOverscroll />
