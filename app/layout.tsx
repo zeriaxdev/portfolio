@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, IBM_Plex_Mono } from "next/font/google";
+import { Geist_Mono, Inter } from "next/font/google";
 import ClientShell from "@/components/ClientShell";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Inter Variable with its optical-size axis: text cuts at body sizes,
+// display cuts on headings, chosen automatically by size.
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  axes: ["opsz"],
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
-  variable: "--font-ibm-plex-mono",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
 });
 
 const siteDescription =
@@ -45,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${ibmPlexMono.variable} antialiased bg-zinc-50 font-sans text-zinc-900 selection:bg-zinc-900 selection:text-zinc-50 dark:bg-black dark:text-zinc-100 dark:selection:bg-zinc-100 dark:selection:text-zinc-900`}
+        className={`${inter.variable} ${geistMono.variable} antialiased font-sans`}
       >
         <ClientShell>{children}</ClientShell>
       </body>

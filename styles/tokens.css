@@ -1,0 +1,123 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOKENS — the only file you need to open to restyle the whole site.
+   Change a value here and every component follows. Nothing else hardcodes.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Neutral ramp, named by lightness. Raw — don't use in components. ── */
+  --grey-0:   #000000;
+  --grey-5:   #131313;
+  --grey-10:  #212121;
+  --grey-45:  #6E6E6E;
+  --grey-55:  #8C8C8C;
+  --grey-60:  #999999;
+  --grey-70:  #B3B3B3;
+  --grey-82:  #2E2E2E;   /* light-mode foreground */
+  --grey-88:  #E0E0E0;
+  --grey-90:  #E6E6E6;
+  --grey-97:  #F9F9F9;
+  --grey-100: #FFFFFF;
+
+  /* ── Semantic. USE THESE. Contrast measured vs the surface. ─────────── */
+  /* design.how's white space and the posters' one cobalt; greys carry
+     only a whisper of cool so the page doesn't read blue. */
+  --surface:        #FFFFFF;          /* page background            */
+  --surface-raised: #F7F7F9;          /* frames behind work         */
+  --fg:             #17181F;          /* 17.6:1  ALL reading text   */
+  --fg-muted:       #5E606C;          /*  6.3:1  notes, meta        */
+  --fg-faint:       #A2A4AE;          /*  2.6:1  decorative only    */
+  --rule:           #E6E7EB;
+  --accent:         #1F34D6;          /*  8.3:1  cobalt: links, focus, selection */
+  /* Terminal windows follow the theme: paper in light, ink in dark. */
+  --console:        #FFFFFF;
+  --console-fg:     var(--fg);
+  --console-rule:   var(--rule);
+  --tone-p: #1A7F37;  /* prompt  */
+  --tone-k: #9A6700;  /* keyword */
+  --tone-f: #0550AE;  /* flag    */
+  --tone-s: #0A3069;  /* string  */
+  --tone-n: #953800;  /* number  */
+  --tone-b: #8250DF;  /* boolean */
+  --tone-d: #6E7781;  /* dim     */          /* terminal windows: navy ink */
+  /* Translucent, so chips tint whatever they sit on (white page or sky)
+     instead of sitting on it as grey blocks. */
+  --chip:           rgb(23 24 31 / 0.05); /* quiet button / nav fill */
+  --chip-hover:     rgb(23 24 31 / 0.09);
+
+  /* Quiet chrome, like design.how: labels sit on nothing until hovered
+     or current, then get a soft chip. */
+  --btn-bg:        transparent;
+  --btn-fg:        color-mix(in srgb, var(--fg) 80%, var(--surface));
+  --btn-bg-active: var(--chip);
+  --btn-fg-active: var(--fg);
+
+  /* Semantic warnings only (a failing contrast check on /dev). */
+  --signal: #E43411;
+  --sky-top: #6FA4EC;   /* homepage sky; also the overscroll colour above it */
+  /* The homepage sky, shared by the hero and the root background behind
+     the scrollbar track, so the two always match. */
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #8EBAF1 30%, #C1DAF8 60%, var(--surface) 100%);
+  --sky-h: min(80svh, 48rem);
+
+  /* ── Type scale. Five steps; nothing else sets a size. ────────────────── */
+  --text-xs:   0.75rem;                      /* 12  code, console, captions   */
+  --text-sm:   0.875rem;                     /* 14  meta, notes, buttons, nav */
+  --text-base: 1rem;                         /* 16  body, ledes               */
+  --text-lg:   1.375rem;                     /* 22  section titles, h2        */
+  --text-xl:   clamp(1.75rem, 3vw, 2.25rem); /* 28–36  page and hero titles   */
+
+  /* ── Spacing. Every gap and pad comes from here. ─────────────────────── */
+  --space-1: 0.25rem;   /*  4px  within a control          */
+  --space-2: 0.5rem;    /*  8px  between related controls  */
+  --space-3: 0.75rem;   /* 12px                            */
+  --space-4: 1rem;      /* 16px  between elements          */
+  --space-6: 1.5rem;    /* 24px                            */
+  --space-8: 2rem;      /* 32px  between groups            */
+  --space-12: 3rem;     /* 48px                            */
+  --space-16: 4rem;     /* 64px  between sections, small   */
+  --space-24: 6rem;     /* 96px  between sections          */
+  --space-36: 9rem;     /* 144px between sections, large   */
+
+  /* Edge of a piece of work (screenshot, video, console) sitting in a frame:
+     a neutral hairline, never tinted, no drop shadow. */
+  --object-ring: 0 0 0 1px rgb(0 0 0 / 0.08);
+
+  /* ── Radius. Small things get small corners. ───────────────────────── */
+  --radius-sm:   6px;    /* chips, focus rings, compare halves */
+  --radius-md:   8px;    /* buttons, consoles, screenshots     */
+  --radius-lg:   12px;   /* frames around work                 */
+  --radius-full: 999px;  /* pills, round controls              */
+
+  /* ── Layout ──────────────────────────────────────────────────────────── */
+  --gutter:    clamp(1.25rem, 4vw, 3rem);
+  --max-width: 1480px;
+  --measure:   62ch;   /* readable line length */
+  --bar-h:     36px;   /* corner bar height    */
+}
+
+/* ── Dark theme: the same semantic names, different values. ───────────── */
+.dark {
+  /* Neutral night: plain near-black and grey, cobalt only as the accent. */
+  --surface:        #0B0B0C;
+  --surface-raised: #141415;
+  --fg:             #EDEDED;          /* 17.3:1 */
+  --fg-muted:       #A1A1A6;          /*  7.6:1 */
+  --fg-faint:       #636368;          /*  3.5:1  decorative only */
+  --rule:           #222224;
+  --accent:         #7D8CFF;          /*  6.6:1 */
+  --object-ring:    0 0 0 1px rgb(255 255 255 / 0.08);
+  --console:        #111113;
+  --console-fg:     #E6E6E6;
+  --console-rule:   #232326;
+  --tone-p: #7EE787;
+  --tone-k: #E3B341;
+  --tone-f: #79C0FF;
+  --tone-s: #A5D6FF;
+  --tone-n: #FFA657;
+  --tone-b: #D2A8FF;
+  --tone-d: #8B949E;
+  --chip:           rgb(237 237 237 / 0.08);
+  --chip-hover:     rgb(237 237 237 / 0.14);
+  --sky-top:        #0D1018;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #10131C 40%, #0F1117 70%, var(--surface) 100%);
+}

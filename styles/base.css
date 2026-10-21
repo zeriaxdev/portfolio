@@ -1,0 +1,45 @@
+/* Element defaults. Everything else is a token or a component. */
+
+/* Google's Inter subsets leave out arrows, so ← fell back to Arial's long
+   thin one. This is Inter's own arrows only (U+2190–2199, 5KB), first in
+   the sans stack; unicode-range keeps it to those characters.
+   Inter © The Inter Project Authors, SIL Open Font License 1.1. */
+@font-face {
+  font-family: "Inter Arrows";
+  src: url("/fonts/inter-arrows.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  unicode-range: U+2190-2199;
+}
+
+@layer base {
+  /* A thin, quiet thumb on a page-coloured track. The track gets its own
+     colour because a transparent one shows the root background, which is
+     sky on the homepage (for the rubber band) all the way down. */
+  html {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--fg) 22%, var(--surface)) var(--surface);
+  }
+  /* Safari still reads only the prefixed version. */
+  ::-webkit-scrollbar { width: 8px; height: 8px; background: var(--surface); }
+  ::-webkit-scrollbar-thumb { border-radius: var(--radius-full); background: color-mix(in srgb, var(--fg) 22%, var(--surface)); }
+
+  body {
+    background: var(--surface);
+    color: var(--fg);
+    /* Root only — never per component. */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  input[type="checkbox"] {
+    @apply w-4 h-4 accent-neutral-900 dark:accent-neutral-100;
+  }
+}

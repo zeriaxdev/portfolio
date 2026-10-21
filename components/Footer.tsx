@@ -1,56 +1,31 @@
-import { JSX } from "react";
+const LINKS = [
+  { href: "https://github.com/zeriaxdev/", label: "GitHub" },
+  { href: "https://www.linkedin.com/in/egor-gaynutdinov/", label: "LinkedIn" },
+  { href: "mailto:contact@zeriax.com", label: "contact@zeriax.com" },
+  { href: "/rss.xml", label: "RSS" },
+];
 
 export default function Footer() {
   return (
-    <footer className="mt-16 border-t border-zinc-200 pb-4 pt-8 dark:border-white/15">
-      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <ul className="flex items-center gap-6 text-sm text-neutral-600 dark:text-neutral-400">
-          <FooterLink
-            href="https://github.com/zeriaxdev/"
-            label="github"
-            iconSVG={<GithubIcon />}
-          />
-          <FooterLink
-            href="https://www.linkedin.com/in/egor-gaynutdinov/"
-            label="linkedin"
-            iconSVG={<LinkedinIcon />}
-          />
-          <FooterLink
-            href="mailto:contact@zeriax.com"
-            label="email"
-            iconSVG={<EmailIcon />}
-          />
-          <FooterLink href="/rss.xml" label="rss" iconSVG={<RSSIcon />} />
-        </ul>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          © 2026 MIT Licensed
-        </p>
+    <footer className="site-footer wrap">
+      <div className="footer-row">
+        <p className="t-small footer-mark">© {new Date().getFullYear()} zeriax</p>
+        <nav className="footer-links" aria-label="Elsewhere">
+          {LINKS.map(({ href, label }) => (
+            <a
+              key={href}
+              href={href}
+              className="t-link t-small"
+              {...(href.startsWith("http")
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
       </div>
     </footer>
-  );
-}
-
-function FooterLink({
-  href,
-  label,
-  iconSVG,
-}: {
-  href: string;
-  label: string;
-  iconSVG: JSX.Element;
-}) {
-  return (
-    <li>
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="footer-link"
-      >
-        {iconSVG}
-        {label}
-      </a>
-    </li>
   );
 }
 

@@ -1,97 +1,62 @@
 import type { Metadata } from "next";
-import { ArrowIcon } from "@/components/Footer";
-import DollarDeployLogo from "@/components/icons/DollarDeployLogo";
+import Image from "next/image";
+import { A, Console, Row } from "@/components/work/parts";
+import { projects } from "@/lib/projects";
+import { consoles, ddCase, hidden, notes, projectConsole } from "@/lib/work";
 
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description:
-    "Projects by zeriax — DollarDeploy, ruoka-rs, and maykbot-ts.",
+  title: "Work",
+  description: "Product design at DollarDeploy, and small tools by zeriax.",
 };
 
-interface Project {
-  name: string;
-  description: string;
-  href: string;
-  tags: string[];
-  archived?: boolean;
-  icon?: React.ReactNode;
-}
-
-const projects: Project[] = [
-  {
-    name: "DollarDeploy",
-    description:
-      "Assisting with DollarDeploy, a fast code-to-production app made for developers.",
-    href: "https://dollardeploy.com",
-    tags: ["Next.js", "TypeScript", "Design"],
-    icon: <DollarDeployLogo />,
-  },
-  {
-    name: "ruoka-rs",
-    description:
-      "CLI tool to fetch the mayk.fi menu effectively. Blazingly fast!",
-    href: "https://crates.io/crates/ruoka-rs",
-    tags: ["Rust"],
-    archived: true,
-  },
-  {
-    name: "maykbot-ts",
-    description:
-      "Discord bot for Maunulan Yhteiskoulu. HSL/Covid/menu/YLE/weather data.",
-    href: "https://github.com/libreMayk/maykbot-ts",
-    tags: ["Discord.js", "TypeScript"],
-    archived: true,
-  },
-];
+const href = (p: (typeof projects)[number]) => (p.overview ? `/portfolio/${p.slug}` : p.href);
 
 export default function Portfolio() {
-  return (
-    <section>
-      <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
-        portfolio
-      </h1>
-      <div className="-mx-4">
-        {projects.map((project) => (
-          <a
-            key={project.name}
-            href={project.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col gap-1 px-4 py-3 rounded-xl transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900/50"
-          >
-            <div className="flex justify-between">
-              <div className="flex items-center gap-1.5 font-medium text-neutral-900 dark:text-neutral-100">
-                {project.icon ?? <ArrowIcon />}
-                {project.name}
-              </div>
-              {project.archived && (
-                <span
-                  className="text-xs px-2 py-0.5 rounded-lg font-mono
-                    bg-amber-200 dark:bg-amber-950 text-amber-700 dark:text-amber-500
-                    border border-amber-400 dark:border-amber-800"
-                >
-                  archive
-                </span>
-              )}
-            </div>
+  const shown = projects.filter((p) => !hidden.has(p.slug));
+  const framed = shown.filter((p) => p.slug === "dollardeploy" || projectConsole[p.slug]);
+  const rest = shown.filter((p) => !framed.includes(p));
 
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              {project.description}
-            </p>
-            <div className="flex gap-2 flex-wrap mt-1">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2 py-0.5 rounded-full bg-neutral-100 dark:bg-neutral-900
-                    text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-800"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </a>
-        ))}
+  return (
+    <div className="span-all">
+      <header className="page-head">
+        <h1 className="page-title">Work</h1>
+        <p className="page-lede">Product design at DollarDeploy, and small tools I build for myself and other people.</p>
+      </header>
+
+      <div className="col">
+        {framed.map((p) => {
+          const key = projectConsole[p.slug];
+          return (
+            <figure key={p.slug} className="work-fig">
+              <div className={`frame${key ? "" : " frame-wide"}`}>
+                {key ? (
+                  <Console console={consoles[key]} />
+                ) : (
+                  <>
+                    <Image src={`${ddCase.after.src}-light.webp`} alt={ddCase.after.alt} width={2000} height={1250} sizes="34rem" className="only-light frame-shot" />
+                    <Image src={`${ddCase.after.src}-dark.webp`} alt={ddCase.after.alt} width={2000} height={1250} sizes="34rem" className="only-dark frame-shot" />
+                  </>
+                )}
+              </div>
+              <Row name={p.name} href={href(p)} note={notes[p.slug] ?? p.description} as="h2" />
+            </figure>
+          );
+        })}
       </div>
-    </section>
+
+      <section className="work col" aria-labelledby="also-title">
+        <h2 id="also-title" className="section-title">Also</h2>
+        <ul className="rows">
+          {rest.map((p) => (
+            <li key={p.slug}>
+              <A href={href(p)} className="row-link">
+                <span className="row-main">{p.name}</span>
+                <span className="row-side">{notes[p.slug] ?? p.description}</span>
+              </A>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
   );
 }
