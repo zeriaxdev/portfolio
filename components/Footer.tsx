@@ -24,6 +24,27 @@ export default function Footer() {
             </a>
           ))}
         </nav>
+        <p className="t-small footer-credit">
+          Helsinki sky adapted from{" "}
+          <a
+            href="https://open-meteo.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="t-link"
+          >
+            Open-Meteo
+          </a>
+          {" "}weather data, licensed{" "}
+          <a
+            href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="t-link"
+          >
+            CC BY 4.0
+          </a>
+          .
+        </p>
       </div>
     </footer>
   );
