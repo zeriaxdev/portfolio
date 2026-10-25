@@ -1,3 +1,5 @@
+import { unstable_cache } from "next/cache";
+
 /** Helsinki's sky right now, as the homepage hero draws it. */
 
 export type SkyKind =
@@ -57,6 +59,11 @@ export type ForecastStep = {
 
 type ForecastResponse = {
   properties?: { timeseries?: ForecastStep[] };
+};
+
+type CachedSky = {
+  sky: Sky;
+  lastModified: string | null;
 };
 
 /** Seconds for the 1920px tile to drift past at a wind speed. The ?wind=
@@ -198,22 +205,49 @@ export function skyFrom(step: ForecastStep): Sky {
 const URL =
   "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=60.17&lon=24.94";
 const USER_AGENT = "zeriax.com weather (contact@zeriax.com)";
+let lastCachedSky: CachedSky | null = null;
+
+const getCachedHelsinkiForecast = unstable_cache(
+  async (): Promise<CachedSky> => {
+    const headers = new Headers({ "User-Agent": USER_AGENT });
+    if (lastCachedSky?.lastModified) {
+      headers.set("If-Modified-Since", lastCachedSky.lastModified);
+    }
+
+    const res = await fetch(URL, {
+      cache: "no-store",
+      headers,
+      signal: AbortSignal.timeout(3000),
+    });
+    if (res.status === 304 && lastCachedSky) return lastCachedSky;
+    if (!res.ok) throw new Error(`MET Norway returned ${res.status}`);
+
+    const forecast = (await res.json()) as ForecastResponse;
+    const current = forecast.properties?.timeseries?.[0];
+    if (!current?.data?.instant?.details) {
+      throw new Error("MET Norway returned no current Helsinki forecast");
+    }
+
+    const snapshot = {
+      sky: skyFrom(current),
+      lastModified: res.headers.get("last-modified"),
+    };
+    lastCachedSky = snapshot;
+    return snapshot;
+  },
+  ["met-no-helsinki-locationforecast-v1"],
+  { revalidate: 1800 },
+);
 
 /** The cached server fetch refreshes only after a visitor arrives following
  *  expiry. MET Norway updates Nordic forecasts hourly and asks clients to
- *  wait at least 30 minutes between requests for the same location. */
+ *  wait at least 30 minutes between requests for the same location. Rechecks
+ *  use Last-Modified when the current server process has that metadata. */
 export async function getHelsinkiSky(): Promise<Sky | null> {
   try {
-    const res = await fetch(URL, {
-      headers: { "User-Agent": USER_AGENT },
-      next: { revalidate: 1800 },
-      signal: AbortSignal.timeout(3000),
-    });
-    if (!res.ok) return null;
-    const forecast = (await res.json()) as ForecastResponse;
-    const current = forecast.properties?.timeseries?.[0];
-    if (!current?.data?.instant?.details) return null;
-    return skyFrom(current);
+    const snapshot = await getCachedHelsinkiForecast();
+    lastCachedSky = snapshot;
+    return snapshot.sky;
   } catch {
     return null;
   }
