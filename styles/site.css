@@ -103,6 +103,7 @@ body::after {
     height: var(--sky-h);
     overflow: hidden;
     background: var(--sky);
+    --weather-particle: #304761;
   }
   .home-sky-far,
   .home-sky-clouds {
@@ -141,11 +142,41 @@ body::after {
   .home-sky[data-kind="broken"] .home-sky-clouds,
   .home-sky[data-kind="overcast"] .home-sky-clouds,
   .home-sky[data-kind="fog"] .home-sky-clouds { background-image: url("/work/sky-cirrus-3.png"); }
+  .home-sky[data-kind="rain"] .home-sky-clouds,
+  .home-sky[data-kind="snow"] .home-sky-clouds,
+  .home-sky[data-kind="storm"] .home-sky-clouds { background-image: url("/work/sky-cirrus-3.png"); }
   .home-sky[data-kind="overcast"] .home-sky-far,
-  .home-sky[data-kind="fog"] .home-sky-far { background-image: url("/work/sky-cirrus-3.png"); }
+  .home-sky[data-kind="fog"] .home-sky-far,
+  .home-sky[data-kind="rain"] .home-sky-far,
+  .home-sky[data-kind="snow"] .home-sky-far,
+  .home-sky[data-kind="storm"] .home-sky-far { background-image: url("/work/sky-cirrus-3.png"); }
   .home-sky[data-kind="overcast"] .home-sky-clouds { --o: 0.75; }
   .home-sky[data-kind="fog"] .home-sky-clouds { --o: 0.45; }
+  .home-sky[data-time="night"][data-kind="clear"] .home-sky-clouds { --o: 0.12; }
+  .home-sky[data-kind="rain"] .home-sky-clouds { --o: 0.42; }
+  .home-sky[data-kind="snow"] .home-sky-clouds { --o: 0.38; }
+  .home-sky[data-kind="storm"] .home-sky-clouds { --o: 0.32; }
+  .home-sky[data-time="night"][data-kind="rain"] .home-sky-clouds { --o: 0.3; }
+  .home-sky[data-time="night"][data-kind="snow"] .home-sky-clouds { --o: 0.28; }
+  .home-sky[data-time="night"][data-kind="storm"] .home-sky-clouds { --o: 0.24; }
   .dark .home-sky { --dim: 0.24; }
+  .dark .home-sky { --weather-particle: #EDF4FF; }
+  .dark .home-sky[data-kind="rain"] { --dim: 0.32; }
+  .dark .home-sky[data-kind="snow"] { --dim: 0.38; }
+  .dark .home-sky[data-kind="storm"] { --dim: 0.42; }
+  .dark .home-sky[data-kind="rain"] .home-sky-clouds { --o: 0.78; }
+  .dark .home-sky[data-kind="snow"] .home-sky-clouds { --o: 0.72; }
+  .dark .home-sky[data-kind="storm"] .home-sky-clouds { --o: 0.82; }
+  .home-sky-weather {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    pointer-events: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+  }
   /* --sky-r (0..1, set on load) starts the drift at a random point; --w is
      the layer's tile width. */
   @keyframes sky-drift {
@@ -439,4 +470,48 @@ html.dark:has(.home-sky[data-kind="overcast"]),
 html.dark:has(.home-sky[data-kind="fog"]) {
   --sky-top: #15161A;
   --sky: linear-gradient(180deg, var(--sky-top) 0%, #17181C 40%, #121315 70%, var(--surface) 100%);
+}
+html:has(.home-sky[data-kind="rain"]) {
+  --sky-top: #8FA2B6;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #B6C5D4 38%, #DDE5EC 70%, var(--surface) 100%);
+}
+html:has(.home-sky[data-kind="snow"]) {
+  --sky-top: #A6B8CB;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #C1D0DF 40%, #E0E7EF 72%, var(--surface) 100%);
+}
+html:has(.home-sky[data-kind="storm"]) {
+  --sky-top: #7A8DA5;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #A8B6C7 38%, #D5DDE6 70%, var(--surface) 100%);
+}
+html.dark:has(.home-sky[data-kind="rain"]) {
+  --sky-top: #10151E;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #171F2B 42%, #121821 72%, var(--surface) 100%);
+}
+html.dark:has(.home-sky[data-kind="snow"]) {
+  --sky-top: #121B27;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #1E2B39 42%, #17212C 72%, var(--surface) 100%);
+}
+html.dark:has(.home-sky[data-kind="storm"]) {
+  --sky-top: #0C1017;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #151D28 42%, #10151D 72%, var(--surface) 100%);
+}
+html:has(.home-sky[data-time="night"]) {
+  --sky-top: #94A4B9;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #B5C1D0 42%, #DCE3EA 72%, var(--surface) 100%);
+}
+html:has(.home-sky[data-time="night"][data-kind="rain"]) {
+  --sky-top: #91A2B7;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #B5C1D0 42%, #DCE3EA 72%, var(--surface) 100%);
+}
+html:has(.home-sky[data-time="night"][data-kind="snow"]) {
+  --sky-top: #A5B5C7;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #C2CDD9 42%, #E2E7ED 72%, var(--surface) 100%);
+}
+html:has(.home-sky[data-time="night"][data-kind="storm"]) {
+  --sky-top: #7A8DA5;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #A8B6C7 42%, #D9E0E7 72%, var(--surface) 100%);
+}
+html.dark:has(.home-sky[data-time="night"]) {
+  --sky-top: #080C14;
+  --sky: linear-gradient(180deg, var(--sky-top) 0%, #101723 42%, #0E131A 72%, var(--surface) 100%);
 }
