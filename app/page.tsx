@@ -1,5 +1,8 @@
 import { Compare, Motion, SkyOverscroll } from "@/components/work/client";
+import { WeatherParticles } from "@/components/work/weather-particles";
 import { A, Console, Row } from "@/components/work/parts";
+import type { CSSProperties } from "react";
+import { getHelsinkiSky } from "@/lib/weather";
 import { consoles, ddCase, pricingMotion } from "@/lib/work";
 
 const more = [
@@ -9,19 +12,76 @@ const more = [
   { href: "/portfolio/mac-schoolmenu", label: "mac-schoolmenu" },
 ];
 
-export default function Home() {
+const skyPreviewScript = `(function(e){
+  var q=new URLSearchParams(location.search);
+  var kinds=['clear','few','scattered','broken','overcast','fog','rain','snow','storm'];
+  var k=q.get('weather'),i=q.get('intensity'),w=q.get('wind'),d=q.get('direction'),t=q.get('time'),p=q.get('precipitation');
+  function setIntensity(value){
+    var n=Number(value);
+    if(!Number.isFinite(n))return;
+    n=Math.max(0,Math.min(1,n));
+    e.style.setProperty('--intensity',n.toFixed(2));
+  }
+  if(k&&kinds.indexOf(k)!==-1){
+    e.dataset.kind=k;
+    e.dataset.precipitationType=k==='rain'?'rain':k==='snow'?'snow':k==='storm'?'storm':'';
+    if(i===null&&['rain','snow','storm'].indexOf(k)!==-1)setIntensity(0.6);
+  }else if(!e.dataset.kind){e.dataset.kind=['few','scattered','broken'][Math.floor(Math.random()*3)]}
+  if(p==='freezing'||p==='hail')e.dataset.precipitationType=p;
+  if(i!==null)setIntensity(i);
+  if(t==='day'||t==='night')e.dataset.time=t;
+  var liveSpeed=Number(e.dataset.windSpeed),liveDirection=Number(e.dataset.windDirection);
+  if(!Number.isFinite(liveSpeed))liveSpeed=0;
+  if(!Number.isFinite(liveDirection))liveDirection=90;
+  if(w!==null||d!==null){
+    var rawSpeed=w===null?liveSpeed:Number(w);
+    if(!Number.isFinite(rawSpeed))rawSpeed=0;
+    var speed=Math.min(60,Math.abs(rawSpeed));
+    var rawDirection=d===null?(w===null?liveDirection:(rawSpeed<0?270:90)):Number(d);
+    if(!Number.isFinite(rawDirection))rawDirection=90;
+    var direction=((rawDirection%360)+360)%360;
+    var dx=-Math.sin(direction*Math.PI/180);
+    e.style.setProperty('--drift',Math.round(Math.min(900,Math.max(60,1920/(1.5+speed*1.6*Math.max(Math.abs(dx),0.35)))))+'s');
+    e.style.setProperty('--dir',dx>0?'reverse':'normal');
+    e.style.setProperty('--sway',Math.round(Math.min(8,Math.max(2,speed*0.6)))+'px');
+  }
+  e.style.setProperty('--sky-r',Math.random().toFixed(3));
+})(document.currentScript.parentElement)`;
+
+export default async function Home() {
+  const sky = await getHelsinkiSky();
   return (
     <div className="span-all">
-      {/* A dithered sky behind the top of the page; it fades into the page colour. */}
-      <div className="home-sky" aria-hidden suppressHydrationWarning>
-        {/* Before first paint: pick one of three cloud tiles and a random start. */}
+      {/* Helsinki's sky right now, dithered, fading into the page colour. */}
+      <div
+        className="home-sky"
+        data-kind={sky?.kind}
+        data-time={sky?.time}
+        data-drizzle={sky?.isDrizzle || undefined}
+        data-precipitation-type={sky?.precipitationType ?? undefined}
+        data-wind-speed={sky?.windSpeed}
+        data-wind-direction={sky?.windDirection}
+        style={sky ? ({
+          "--drift": `${sky.drift}s`,
+          "--dir": sky.dir,
+          "--sway": `${sky.sway}px`,
+          "--intensity": sky.intensity.toFixed(2),
+        } as CSSProperties) : undefined}
+        aria-hidden
+        suppressHydrationWarning
+      >
+        {/* Before first paint: a random start, a random sky if the weather is
+            unknown. Preview with ?weather=rain&intensity=0.8&wind=12&direction=225.
+            Direction is where the wind comes from: 0 north, 90 east, 180 south,
+            270 west. Add &precipitation=freezing or hail to preview ice or hail. */}
         <script
           dangerouslySetInnerHTML={{
-            __html:
-              "(function(e){e.dataset.v=1+Math.floor(Math.random()*3);e.style.setProperty('--sky-r',Math.random().toFixed(3))})(document.currentScript.parentElement)",
+            __html: skyPreviewScript,
           }}
         />
+        <div className="home-sky-far" />
         <div className="home-sky-clouds" />
+        <WeatherParticles />
       </div>
       <SkyOverscroll />
       <section className="home-hero on-sky" aria-labelledby="home-title">

@@ -6,7 +6,8 @@
     "dev": "sh -c 'set -a; [ -f .env ] && . ./.env; set +a; exec next dev'",
     "build": "next build",
     "start": "sh -c 'set -a; [ -f .env ] && . ./.env; set +a; exec next start'",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --test --no-warnings=MODULE_TYPELESS_PACKAGE_JSON 'lib/*.test.mjs'"
   },
   "dependencies": {
     "@base-ui-components/react": "^1.0.0-rc.0",

@@ -24,6 +24,27 @@ export default function Footer() {
             </a>
           ))}
         </nav>
+        <p className="t-small footer-credit">
+          Helsinki forecast from{" "}
+          <a
+            href="https://api.met.no/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="t-link"
+          >
+            MET Norway
+          </a>
+          {", adapted for this page; "}
+          <a
+            href="https://creativecommons.org/licenses/by/4.0/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="t-link"
+          >
+            CC BY 4.0
+          </a>
+          .
+        </p>
       </div>
     </footer>
   );
