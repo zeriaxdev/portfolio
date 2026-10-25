@@ -57,7 +57,7 @@ export default async function Home() {
         className="home-sky"
         data-kind={sky?.kind}
         data-time={sky?.time}
-        data-weather-code={sky?.weatherCode}
+        data-drizzle={sky?.isDrizzle || undefined}
         data-precipitation-type={sky?.precipitationType ?? undefined}
         data-wind-speed={sky?.windSpeed}
         data-wind-direction={sky?.windDirection}

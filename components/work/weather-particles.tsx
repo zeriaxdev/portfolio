@@ -29,8 +29,7 @@ export function WeatherParticles() {
     const kind = sky.dataset.kind;
     if (kind !== "rain" && kind !== "snow" && kind !== "storm") return;
     const precipitationType = sky.dataset.precipitationType;
-    const weatherCode = Number.parseInt(sky.dataset.weatherCode ?? "", 10);
-    const isDrizzle = weatherCode >= 51 && weatherCode <= 57;
+    const isDrizzle = sky.dataset.drizzle === "true";
 
     const query = new URLSearchParams(window.location.search);
     const parsedIntensity = Number.parseFloat(sky.style.getPropertyValue("--intensity"));
@@ -64,10 +63,11 @@ export function WeatherParticles() {
     let nextFlashAt = performance.now() + 10000 + Math.random() * 12000;
 
     const makeParticle = (fromTop = false): Particle => {
-      const snow = kind === "snow";
+      const snow = kind === "snow" || precipitationType === "snow";
       const solid = snow ||
         (precipitationType === "freezing" && Math.random() < 0.38) ||
-        (precipitationType === "hail" && Math.random() < 0.58);
+        (precipitationType === "hail" && Math.random() < 0.58) ||
+        (precipitationType === "sleet" && Math.random() < 0.38);
       const x = Math.random() * width;
       const baseY = fromTop ? -Math.random() * 80 : Math.random() * height;
       const speedScale = 0.7 + intensity * 0.6;
@@ -141,7 +141,7 @@ export function WeatherParticles() {
       context.setTransform(scale, 0, 0, scale, 0, 0);
       context.imageSmoothingEnabled = false;
 
-      const areaScale = kind === "snow" ? 26000 : 17000;
+      const areaScale = kind === "snow" || sky.dataset.precipitationType === "snow" ? 26000 : 17000;
       const density = 0.28 + intensity * 0.72;
       const stormBoost = kind === "storm" ? 1.15 : 1;
       const count = clamp(Math.round((width * height * density * stormBoost) / areaScale), 8, 88);

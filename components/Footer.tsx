@@ -25,16 +25,16 @@ export default function Footer() {
           ))}
         </nav>
         <p className="t-small footer-credit">
-          Helsinki sky adapted from{" "}
+          Helsinki forecast from{" "}
           <a
-            href="https://open-meteo.com/"
+            href="https://api.met.no/"
             target="_blank"
             rel="noopener noreferrer"
             className="t-link"
           >
-            Open-Meteo
+            MET Norway
           </a>
-          {" "}weather data, licensed{" "}
+          {", adapted for this page; "}
           <a
             href="https://creativecommons.org/licenses/by/4.0/"
             target="_blank"
