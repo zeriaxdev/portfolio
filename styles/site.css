@@ -167,6 +167,14 @@ body::after {
   .dark .home-sky[data-kind="rain"] .home-sky-clouds { --o: 0.78; }
   .dark .home-sky[data-kind="snow"] .home-sky-clouds { --o: 0.72; }
   .dark .home-sky[data-kind="storm"] .home-sky-clouds { --o: 0.82; }
+  /* The light palette uses dark ink over a pale sky. Keep the dither texture
+     atmospheric so dense weather doesn't put the hero copy over dark bands. */
+  html:not(.dark) .home-sky[data-kind="rain"] .home-sky-far,
+  html:not(.dark) .home-sky[data-kind="snow"] .home-sky-far,
+  html:not(.dark) .home-sky[data-kind="storm"] .home-sky-far { --o: 0.3; }
+  html:not(.dark) .home-sky[data-kind="rain"] .home-sky-clouds { --o: 0.24; }
+  html:not(.dark) .home-sky[data-kind="snow"] .home-sky-clouds { --o: 0.22; }
+  html:not(.dark) .home-sky[data-kind="storm"] .home-sky-clouds { --o: 0.2; }
   .home-sky-weather {
     position: absolute;
     z-index: 2;

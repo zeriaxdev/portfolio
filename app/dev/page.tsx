@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import { Console, Row } from "@/components/work/parts";
+import { WeatherTuner } from "@/components/work/weather-tuner";
 import { consoles } from "@/lib/work";
 
 const COLOR_TOKENS = [
@@ -161,6 +162,14 @@ export default function Dev() {
           <a href="/dev" className="quiet-btn is-solid">is-solid</a>
           <a href="/dev" className="quiet-btn">on the sky</a>
         </div>
+      </section>
+
+      <section className="dev-section">
+        <h2 className="t-heading">Weather preview</h2>
+        <p className="t-body dev-note dev-weather-intro">
+          Tune a sky and open a shareable preview. The homepage still follows the weather outside.
+        </p>
+        <WeatherTuner />
       </section>
 
       <section className="dev-section">
